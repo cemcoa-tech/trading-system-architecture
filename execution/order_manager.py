@@ -105,6 +105,8 @@ class OrderManager:
         limit_price: float,
     ) -> float:
         """Place a simple limit order to flatten a position."""
+        self.cancel_open_bracket_legs(contract, include_parent=False)
+        
         lp = self.round_tick(limit_price, spec.tick_size)
         order = LimitOrder(action, quantity, lp)
         order.account = self._account
@@ -134,3 +136,72 @@ class OrderManager:
             tp = entry_price - dist
             sl = entry_price + dist
         return {"tp": tp, "sl": sl, "distance_pts": dist}
+
+
+    def cancel_open_bracket_legs(
+        self,
+        contract: Contract,
+        include_parent: bool = False,
+        wait_s: float = 1.0,
+    ) -> int:
+        """
+        Cancel all open bracket-related orders for a given contract.
+
+        By default this cancels only child legs of a bracket:
+        - take-profit leg
+        - stop-loss leg
+
+        If include_parent=True, it also cancels the parent order if still open.
+
+        Returns:
+            Number of cancel requests sent.
+        """
+        canceled = 0
+        target_conid = getattr(contract, "conId", None)
+
+        if not target_conid:
+            raise ValueError("Contract must be qualified before cancelling orders (missing conId).")
+
+        for trade in self._ib.openTrades():
+            try:
+                live_contract = trade.contract
+                if getattr(live_contract, "conId", None) != target_conid:
+                    continue
+
+                status = (trade.orderStatus.status or "").upper()
+                if status in {"FILLED", "CANCELLED", "INACTIVE"}:
+                    continue
+
+                parent_id = int(getattr(trade.order, "parentId", 0) or 0)
+
+                # Bracket child orders have parentId != 0
+                is_bracket_leg = parent_id != 0
+
+                if not is_bracket_leg and not include_parent:
+                    continue
+
+                self._ib.cancelOrder(trade.order)
+                canceled += 1
+
+                log.info(
+                    "Cancel requested: conId=%s orderId=%s parentId=%s action=%s type=%s status=%s",
+                    target_conid,
+                    getattr(trade.order, "orderId", None),
+                    parent_id,
+                    getattr(trade.order, "action", None),
+                    getattr(trade.order, "orderType", None),
+                    status,
+                )
+
+            except Exception as exc:
+                log.warning(
+                    "Failed to cancel orderId=%s for conId=%s: %s",
+                    getattr(trade.order, "orderId", None),
+                    target_conid,
+                    exc,
+                )
+
+        if canceled:
+            self._ib.waitOnUpdate(timeout=wait_s)
+
+        return canceled
