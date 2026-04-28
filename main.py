@@ -24,6 +24,7 @@ from config.settings import (
     LogConfig,
     MGC_PULLBACK_PARAMS,
     MarketDataConfig,
+    StrategyParams,
 )
 from database.manager import DatabaseManager
 from execution.broker import Broker
@@ -45,6 +46,14 @@ def signal_handler(signum, frame):
     log.info("Shutdown signal received, stopping continuous trading...")
 
 
+# main.py (UPDATE the build_strategies function)
+
+from strategies.mgc_pullback import MGCPullbackStrategy
+from strategies.mnq_condition1 import MNQCondition1Strategy
+from strategies.mes_condition1 import MESCondition1Strategy
+
+# ... (existing imports)
+
 def build_strategies(
     broker: Broker,
     order_mgr: OrderManager,
@@ -55,16 +64,41 @@ def build_strategies(
     Strategy registry.  Add new strategies here.
     Each entry maps a short name → (ParamsObject, StrategyClass).
     """
+    from config.settings import (
+        MGC_PULLBACK_PARAMS,
+        MNQ_CONDITION1_PARAMS,
+        MES_CONDITION1_PARAMS,
+    )
+    
     registry = {
         "mgc": (MGC_PULLBACK_PARAMS, MGCPullbackStrategy),
-        # "mnq": (MNQ_STAIR_PARAMS, MNQStairStepStrategy),  # future
+        "mnq": (MNQ_CONDITION1_PARAMS, MNQCondition1Strategy),
+        "mes": (MES_CONDITION1_PARAMS, MESCondition1Strategy),
     }
 
     strategies: List[BaseStrategy] = []
     for key, (params, cls) in registry.items():
         if filter_name and key != filter_name:
             continue
-        strategies.append(cls(params=params, broker=broker, order_mgr=order_mgr, db=db))
+        
+        # Convert params to StrategyParams if needed
+        if not isinstance(params, StrategyParams):
+            strategy_params = StrategyParams(
+                name=params.name,
+                contract_spec=params.contract_spec,
+                risk_usd=params.risk_usd,
+                max_position=params.max_position,
+                params=params.params,
+            )
+        else:
+            strategy_params = params
+        
+        strategies.append(cls(
+            params=strategy_params,
+            broker=broker,
+            order_mgr=order_mgr,
+            db=db
+        ))
 
     return strategies
 
@@ -219,6 +253,7 @@ def main() -> None:
                         trade_ct = broker.qualify_contract(strat.spec)
                         pos = broker.get_position_quantity(trade_ct.conId)
                         sig = strat.generate_signal(df, pos)
+                        log.info("Signal FULL: %s", sig)
                         log.info(
                             "[DRY RUN] Signal: %s | Reason: %s",
                             sig.signal_type, sig.reason,

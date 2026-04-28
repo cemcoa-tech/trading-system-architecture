@@ -21,7 +21,7 @@ LOG_DIR = BASE_DIR / "logs"
 class IBKRConfig:
     """Interactive Brokers gateway / TWS connection parameters."""
     host: str = "127.0.0.1"
-    port: int = 4001          # 4002 = IB Gateway paper, 7497 = TWS paper
+    port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8935
     account: str = "U22862141"
     connect_timeout: float = 15.0
@@ -72,11 +72,11 @@ class ContractSpec:
 
 # ── Pre-built contract specs ────────────────────────────────────────────────
 MGC_SPEC = ContractSpec(
-    symbol="MGC",
+    symbol="GC",
     last_trade_date="202606",
     exchange="COMEX",
     tick_size=0.1,
-    point_value=10.0,
+    point_value=100.0,
     price_offset=5.0,
     data_symbol="GC",
     data_last_trade_date="202606",
@@ -117,13 +117,13 @@ class StrategyParams:
 MGC_PULLBACK_PARAMS = StrategyParams(
     name="mgc_pullback",
     contract_spec=MGC_SPEC,
-    risk_usd=1100.0,
+    risk_usd=11000.0,
     max_position=1,
     params={
         "trend_length": 200,
         "rsi_length": 2,
         "rsi_threshold": 30,
-        "exit_ma_length": 37,
+        "exit_ma_length": 32,
     },
 )
 
@@ -144,3 +144,148 @@ class DashboardConfig:
     refresh_interval_ms: int = 5000      # auto-refresh every 5s
     max_signal_rows: int = 200
     max_trade_rows: int = 500
+
+
+
+@dataclass
+class MNQCondition1Params:
+    """MNQ Condition1 strategy configuration."""
+    
+    # Strategy identification
+    name: str = "MNQ_Condition1"
+    
+    # Contract specifications
+    symbol: str = "MNQ"
+    data_symbol: str = "MNQ"  # Use continuous for data
+    contract_month: str = "202606"  # June 2026 front-month
+    exchange: str = "CME"
+    currency: str = "USD"
+    tick_size: float = 0.25
+    point_value: float = 2.0  # $2 per point
+    
+    # Data fetching
+    duration: str = "2 Y"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    roc_lookback: int = 5
+    ema_span: int = 3
+    atr_period: int = 20
+    
+    # Exit parameters
+    max_time: int = 5  # Max bars to hold
+    profitable_closes: int = 7  # Exit after N profitable closes
+    pt_on: int = 1  # 1 = profit target active
+    sl_on: int = 1  # 1 = stop loss active
+    ptatr: float = 2.0  # PT = entry + ATR * PTATR
+    slatr: float = 4.0  # SL = entry - ATR * SLATR
+    
+    # Risk management
+    risk_usd: float = 1100.0
+    max_position: int = 1
+    price_offset: float = 0.0  # Enter at market
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            data_symbol=self.data_symbol,
+            last_trade_date=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+            price_offset=self.price_offset,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "roc_lookback": self.roc_lookback,
+            "ema_span": self.ema_span,
+            "atr_period": self.atr_period,
+            "max_time": self.max_time,
+            "profitable_closes": self.profitable_closes,
+            "pt_on": self.pt_on,
+            "sl_on": self.sl_on,
+            "ptatr": self.ptatr,
+            "slatr": self.slatr,
+        }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  MES CONDITION1 STRATEGY PARAMETERS
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass
+class MESCondition1Params:
+    """MES Condition1 strategy configuration (identical logic to MNQ)."""
+    
+    # Strategy identification
+    name: str = "MES_Condition1"
+    
+    # Contract specifications
+    symbol: str = "MES"
+    data_symbol: str = "MES"  # Use continuous for data
+    contract_month: str = "202606"  # June 2026 front-month
+    exchange: str = "CME"
+    currency: str = "USD"
+    tick_size: float = 0.25
+    point_value: float = 5.0  # $5 per point
+    
+    # Data fetching
+    duration: str = "2 Y"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    roc_lookback: int = 5
+    ema_span: int = 3
+    atr_period: int = 20
+    
+    # Exit parameters
+    max_time: int = 5
+    profitable_closes: int = 7
+    pt_on: int = 1
+    sl_on: int = 1
+    ptatr: float = 2.0
+    slatr: float = 4.0
+    
+    # Risk management
+    risk_usd: float = 1100.0
+    max_position: int = 1
+    price_offset: float = 0.0
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            data_symbol=self.data_symbol,
+            last_trade_date=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+            price_offset=self.price_offset,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "roc_lookback": self.roc_lookback,
+            "ema_span": self.ema_span,
+            "atr_period": self.atr_period,
+            "max_time": self.max_time,
+            "profitable_closes": self.profitable_closes,
+            "pt_on": self.pt_on,
+            "sl_on": self.sl_on,
+            "ptatr": self.ptatr,
+            "slatr": self.slatr,
+        }
+
+
+# Instantiate default configurations
+MNQ_CONDITION1_PARAMS = MNQCondition1Params()
+MES_CONDITION1_PARAMS = MESCondition1Params()

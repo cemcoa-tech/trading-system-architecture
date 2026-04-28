@@ -320,3 +320,60 @@ class DatabaseManager:
     def close(self) -> None:
         self._conn.close()
         log.info("Database connection closed")
+
+    def upsert_position_state(
+        self,
+        strategy_name: str,
+        symbol: str,
+        entry_bar_date: str = None,
+        entry_price: float = None,
+        bars_held: int = 0,
+        profitable_closes: int = 0,
+        tp_price: float = None,
+        sl_price: float = None,
+        state_json: str = None,
+    ) -> None:
+        """Update or insert position state for complex strategies."""
+        self._conn.execute(
+            """
+            INSERT INTO position_state (
+                strategy_name, symbol, entry_bar_date, entry_price,
+                bars_held, profitable_closes, tp_price, sl_price, state_json
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(strategy_name, symbol) DO UPDATE SET
+                entry_bar_date = excluded.entry_bar_date,
+                entry_price = excluded.entry_price,
+                bars_held = excluded.bars_held,
+                profitable_closes = excluded.profitable_closes,
+                tp_price = excluded.tp_price,
+                sl_price = excluded.sl_price,
+                state_json = excluded.state_json,
+                updated_at = datetime('now')
+            """,
+            (
+                strategy_name, symbol, entry_bar_date, entry_price,
+                bars_held, profitable_closes, tp_price, sl_price, state_json
+            ),
+        )
+        self._conn.commit()
+
+    def get_position_state(self, strategy_name: str, symbol: str) -> Optional[dict]:
+        """Retrieve position state for a strategy/symbol."""
+        row = self._conn.execute(
+            """
+            SELECT * FROM position_state
+            WHERE strategy_name = ? AND symbol = ?
+            """,
+            (strategy_name, symbol),
+        ).fetchone()
+        
+        return dict(row) if row else None
+
+    def delete_position_state(self, strategy_name: str, symbol: str) -> None:
+        """Delete position state (on exit)."""
+        self._conn.execute(
+            "DELETE FROM position_state WHERE strategy_name = ? AND symbol = ?",
+            (strategy_name, symbol),
+        )
+        self._conn.commit()

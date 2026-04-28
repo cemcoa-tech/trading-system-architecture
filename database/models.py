@@ -78,17 +78,20 @@ CREATE INDEX IF NOT EXISTS idx_orders_trade    ON orders(trade_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status   ON orders(status);
 
 -- ── Position snapshots (periodic state capture) ────────────────────────────
-CREATE TABLE IF NOT EXISTS positions (
+CREATE TABLE IF NOT EXISTS position_state (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     strategy_name   TEXT    NOT NULL,
     symbol          TEXT    NOT NULL,
-    quantity        INTEGER NOT NULL DEFAULT 0,
-    avg_cost        REAL,
-    market_price    REAL,
-    unrealized_pnl  REAL,
-    realized_pnl    REAL,
-    snapshot_time   TEXT    NOT NULL DEFAULT (datetime('now')),
-    FOREIGN KEY (strategy_name) REFERENCES strategies(name)
+    entry_bar_date  TEXT,
+    entry_price     REAL,
+    bars_held       INTEGER DEFAULT 0,
+    profitable_closes INTEGER DEFAULT 0,
+    tp_price        REAL,
+    sl_price        REAL,
+    state_json      TEXT,                        -- JSON blob for additional state
+    updated_at      TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (strategy_name) REFERENCES strategies(name),
+    UNIQUE(strategy_name, symbol)
 );
-CREATE INDEX IF NOT EXISTS idx_positions_strategy ON positions(strategy_name);
+CREATE INDEX IF NOT EXISTS idx_position_state_strategy ON position_state(strategy_name);
 """
