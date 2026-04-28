@@ -71,15 +71,18 @@ class OrderManager:
         sl = self.round_tick(sl_price, spec.tick_size)
 
         bracket = self._ib.bracketOrder(action, quantity, lp, tp, sl)
-
+        print("Bracket::::::::::::", bracket)
         for o in bracket:
+            print("Order::::::::::::", o)
             o.account = self._account
+            o.outsideRth = True
         # TP and SL are GTC; parent only transmits last
         bracket[0].transmit = False
         bracket[1].tif = "GTC"
         bracket[1].transmit = False
         bracket[2].tif = "GTC"
         bracket[2].transmit = True
+
 
         parent_trade = self._ib.placeOrder(contract, bracket[0])
         parent_trade.filledEvent += lambda _t: log.info(
@@ -110,6 +113,7 @@ class OrderManager:
         lp = self.round_tick(limit_price, spec.tick_size)
         order = LimitOrder(action, quantity, lp)
         order.account = self._account
+        order.outsideRth = True
         self._ib.placeOrder(contract, order)
         self._ib.waitOnUpdate()
         log.info("Exit order placed: %s %d @ %.2f", action, quantity, lp)
