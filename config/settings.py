@@ -94,7 +94,7 @@ ES_SPEC = ContractSpec(
 )
 
 MNQ_SPEC = ContractSpec(
-    symbol="MNQ",
+    symbol="NQ",
     last_trade_date="202606",
     exchange="CME",
     tick_size=0.25,
@@ -155,8 +155,8 @@ class MNQCondition1Params:
     name: str = "MNQ_Condition1"
     
     # Contract specifications
-    symbol: str = "MNQ"
-    data_symbol: str = "MNQ"  # Use continuous for data
+    symbol: str = "NQ"
+    data_symbol: str = "NQ"  # Use continuous for data
     contract_month: str = "202606"  # June 2026 front-month
     exchange: str = "CME"
     currency: str = "USD"
@@ -226,8 +226,8 @@ class MESCondition1Params:
     name: str = "MES_Condition1"
     
     # Contract specifications
-    symbol: str = "MES"
-    data_symbol: str = "MES"  # Use continuous for data
+    symbol: str = "ES"
+    data_symbol: str = "ES"  # Use continuous for data
     contract_month: str = "202606"  # June 2026 front-month
     exchange: str = "CME"
     currency: str = "USD"

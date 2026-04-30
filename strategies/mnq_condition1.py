@@ -74,7 +74,7 @@ class MNQCondition1Strategy(BaseStrategy):
         """Load position state from database or initialize empty."""
         # Try to load from position_state table first
         pos_state = self.db.get_position_state(self.name, self.spec.symbol)
-        
+        print("pos_state:", pos_state)
         if pos_state:
             return {
                 "in_position": True,
@@ -263,7 +263,7 @@ class MNQCondition1Strategy(BaseStrategy):
         }
         
         # ── EXIT LOGIC (if in position) ──────────────────────────────────
-        
+        print("current_pos BEFORE Exit IF:", current_pos,self._position_state)
         if current_pos > 0 or self._position_state["in_position"]:
             state = self._position_state
             

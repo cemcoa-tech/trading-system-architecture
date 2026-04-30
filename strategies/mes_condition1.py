@@ -263,7 +263,8 @@ class MESCondition1Strategy(BaseStrategy):
         }
         
         # ── EXIT LOGIC (if in position) ──────────────────────────────────
-        
+        print("current_pos:", current_pos)
+        print("position_state:", self._position_state)
         if current_pos > 0 or self._position_state["in_position"]:
             state = self._position_state
             
