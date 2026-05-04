@@ -408,10 +408,7 @@ class MESCondition1Strategy(BaseStrategy):
             "sl_price": 0.0,
         }
 
-    def get_position_size(self, signal: Signal) -> int:
-        """Fixed position size (usually 1 contract for MNQ/MES)."""
-        return self.params.max_position
-    
+        
     def _execute_signal(self, signal: Signal, contract, current_pos: int) -> None:
         """
         Override to handle PT/SL from signal metadata and reset/re-entry logic.

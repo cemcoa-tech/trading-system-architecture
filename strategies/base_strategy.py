@@ -76,10 +76,20 @@ class BaseStrategy(ABC):
         """Inspect the latest row + current position and return a Signal."""
         ...
 
-    @abstractmethod
     def get_position_size(self, signal: Signal) -> int:
         """Return desired contract quantity for an entry signal."""
-        ...
+        # Hard-coded quantities based on contract symbol
+        symbol_quantities = {
+            "MBT": 10,  # BTC Micro Futures
+            "GC": 1,     # Gold Futures
+            "ES": 1,     # S&P 500 Micro Futures
+            "NQ": 1,     # NASDAQ 100 Micro Futures
+            "MNQ": 1,    # NASDAQ 100 Micro Futures (alternative symbol)
+            "MES": 1,    # S&P 500 Micro Futures (alternative symbol)
+            "MGC": 1,    # Gold Micro Futures
+        }
+        
+        return symbol_quantities.get(self.spec.symbol, 1)
 
     # ── Template execution ───────────────────────────────────────────────
 
