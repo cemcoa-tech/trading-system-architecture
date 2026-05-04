@@ -51,6 +51,7 @@ def signal_handler(signum, frame):
 from strategies.mgc_pullback import MGCPullbackStrategy
 from strategies.mnq_condition1 import MNQCondition1Strategy
 from strategies.mes_condition1 import MESCondition1Strategy
+from strategies.btc_rsi_meanrev import BTCRSIMeanRevStrategy
 
 # ... (existing imports)
 
@@ -68,12 +69,14 @@ def build_strategies(
         MGC_PULLBACK_PARAMS,
         MNQ_CONDITION1_PARAMS,
         MES_CONDITION1_PARAMS,
+        BTC_RSI_PARAMS,
     )
     
     registry = {
         "mgc": (MGC_PULLBACK_PARAMS, MGCPullbackStrategy),
         "mnq": (MNQ_CONDITION1_PARAMS, MNQCondition1Strategy),
         "mes": (MES_CONDITION1_PARAMS, MESCondition1Strategy),
+        "btc": (BTC_RSI_PARAMS, BTCRSIMeanRevStrategy),
     }
 
     strategies: List[BaseStrategy] = []

@@ -82,3 +82,35 @@ def atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> 
     
     tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
     return tr.ewm(alpha=1/period, adjust=False).mean()
+
+
+def value_lowest(series: pd.Series, window: int) -> pd.Series:
+    """
+    Rolling minimum (ValueLowest in TradeStation).
+    
+    Returns the lowest value over the last 'window' bars.
+    
+    Args:
+        series: Price series (typically lows)
+        window: Lookback window
+        
+    Returns:
+        Series of rolling minimums
+    """
+    return series.rolling(window=window, min_periods=window).min()
+
+
+def value_highest(series: pd.Series, window: int) -> pd.Series:
+    """
+    Rolling maximum (ValueHighest in TradeStation).
+    
+    Returns the highest value over the last 'window' bars.
+    
+    Args:
+        series: Price series (typically highs)
+        window: Lookback window
+        
+    Returns:
+        Series of rolling maximums
+    """
+    return series.rolling(window=window, min_periods=window).max()

@@ -93,7 +93,7 @@ class MGCPullbackStrategy(BaseStrategy):
             uptrend, pullback, exit_up, current_pos,
         )
 
-        if current_pos == 0 and uptrend and pullback:
+        if current_pos == 0:# and uptrend and pullback:
             return Signal(
                 signal_type="ENTRY_LONG",
                 reason="UpTrend & Pullback (RSI2 < 30)",
@@ -119,12 +119,4 @@ class MGCPullbackStrategy(BaseStrategy):
             meta={"date": str(last["date"])},
         )
 
-    def get_position_size(self, signal: Signal) -> int:
-        """Risk-based sizing capped by max_position."""
-        dist = self.params.risk_usd / self.spec.point_value
-        return OrderManager.compute_quantity(
-            risk_usd=self.params.risk_usd,
-            point_value=self.spec.point_value,
-            stop_distance_pts=dist,
-            max_position=self.params.max_position,
-        )
+    

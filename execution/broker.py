@@ -186,6 +186,10 @@ class Broker:
     def get_position_quantity(self, con_id: int) -> int:
         """Current net position for a given conId under the configured account."""
         for p in self._ib.positions():
+            # print("Position:", p)
+            # print("Contract:", p.contract, "conId=", p.contract.conId,"con_id=",con_id)
+            print("Account:", p.account,"==",self._cfg.account,"?",p.account == self._cfg.account)
+            print("Config account:", self._cfg.account)
             if p.contract.conId == con_id and p.account == self._cfg.account:
                 return int(p.position)
         return 0
