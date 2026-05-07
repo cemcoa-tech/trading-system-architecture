@@ -21,7 +21,7 @@ LOG_DIR = BASE_DIR / "logs"
 class IBKRConfig:
     """Interactive Brokers gateway / TWS connection parameters."""
     host: str = "127.0.0.1"
-    port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
+    port: int = 4001          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8935
     account: str = "DUM165609"#"#U22862141
     connect_timeout: float = 15.0

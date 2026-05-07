@@ -151,66 +151,7 @@ class MGCPullbackStrategy(BaseStrategy):
             uptrend, pullback, exit_up, current_pos,
         )
 
-        # ── EXIT LOGIC (if in position) ──────────────────────────────────
-        
-        if current_pos > 0 or self._position_state["in_position"]:
-            state = self._position_state
-            state["bars_held"] += 1
-            
-            # Save state update
-            self._save_position_state()
-            
-            indicators["bars_held"] = state["bars_held"]
-            indicators["entry_price"] = round(state["entry_price"], 2)
-            
-            if exit_up:
-                self.log.info("EXIT: Close > SMA32 (bars=%d)", state["bars_held"])
-                self._reset_position_state()
-                self._delete_position_state()
-                return Signal(
-                    signal_type="EXIT_LONG",
-                    reason=f"Close > SMA32 (bars={state['bars_held']})",
-                    close_price=close,
-                    indicators=indicators,
-                    meta=meta,
-                )
-            
-            # Continue holding
-            self.log.info("HOLD: bars=%d (waiting for SMA32 cross)", state["bars_held"])
-            return Signal(
-                signal_type="NONE",
-                reason=f"Holding position (bars={state['bars_held']})",
-                close_price=close,
-                indicators=indicators,
-                meta=meta,
-            )
-
-        # ── ENTRY LOGIC (if flat) ────────────────────────────────────────
-        
         if current_pos == 0 and uptrend and pullback:
-            # Safety check: ensure position_state agrees we're flat
-            if self._position_state["in_position"]:
-                self.log.warning("Skipping entry: position_state shows in_position=True despite current_pos=0")
-                return Signal(
-                    signal_type="NONE", 
-                    reason="Position state conflict",
-                    close_price=close,
-                    indicators=indicators,
-                    meta=meta,
-                )
-            
-            # Initialize position state
-            self._position_state = {
-                "in_position": True,
-                "entry_bar_date": str(last["date"]),
-                "entry_price": close,  # Will be updated with actual fill
-                "bars_held": 0,
-            }
-            
-            # Save position state to database
-            self._save_position_state()
-            
-            self.log.info("ENTRY: UpTrend & Pullback (RSI2=%.2f < %.1f)", rsi2, self._rsi_thresh)
             return Signal(
                 signal_type="ENTRY_LONG",
                 reason="UpTrend & Pullback (RSI2 < 30)",

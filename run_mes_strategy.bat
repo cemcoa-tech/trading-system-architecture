@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo MGC Pullback Strategy Execution
+echo MES Condition1 Strategy Execution
 echo ========================================
 echo Starting at: %date% %time%
 echo.
@@ -8,11 +8,11 @@ echo.
 REM Change to current directory
 cd /d "%~dp0"
 
-REM Run the MGC strategy using specific Python path with logging
+REM Run the MES strategy using specific Python path with logging
 echo.
-echo Running MGC Pullback Strategy...
+echo Running MES Condition1 Strategy...
 echo ========================================
-"C:\Users\USER\anaconda3\python.exe" main.py --strategy mgc >> mgc_strategy_log.txt 2>&1
+"C:\Users\USER\anaconda3\python.exe" main.py --strategy mes >> mes_strategy_log.txt 2>&1
 
 REM Check execution result
 if %ERRORLEVEL% EQU 0 (
