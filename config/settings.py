@@ -23,7 +23,7 @@ class IBKRConfig:
     host: str = "127.0.0.1"
     port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8935
-    account: str = "U22862141"#"DUM165609
+    account: str = "DUM165609"#"#U22862141
     connect_timeout: float = 15.0
     max_retries: int = 3
     retry_delay: float = 5.0
@@ -352,3 +352,88 @@ class BTCRSIParams:
 
 # Instantiate default configuration
 BTC_RSI_PARAMS = BTCRSIParams()
+
+
+# config/settings.py (ADD this section)
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  BTC STRATEGY 2: VALUELOW/RSI + SMA EXIT PARAMETERS
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass
+class BTC2Params:
+    """
+    BTC Strategy 2: ValueLow/RSI Entry + SMA Turn-Up Exit
+    
+    Entry:
+        - ValueLow(5)[1] <= ValueOpen(5)[3]
+        - RSI(2)[0] between 65 and 75
+        - Condition must be true DELAY bars ago
+    
+    Exit:
+        - TimeX: BarsSinceEntry >= max_time - 1
+        - SigX: SMA(5)[0] > SMA(5)[2] (SMA turning up)
+    """
+    
+    # Strategy identification
+    name: str = "BTC2_ValueLow_SMA"
+    
+    # Contract specifications
+    symbol: str = "MBT"
+    data_symbol: str = "MBT"  # Use continuous contract
+    contract_month: str = "202606"
+    exchange: str = "CME"
+    currency: str = "USD"
+    tick_size: float = 5.0  # MBT = $5 tick
+    point_value: float = 0.10  # $0.10 per index point
+    
+    # Data fetching
+    duration: str = "2 Y"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    rsi_length: int = 2
+    rsi_low: float = 65.0  # Entry: RSI >= rsi_low
+    rsi_high: float = 75.0  # Entry: RSI <= rsi_high
+    vl_window: int = 5  # ValueLow/ValueOpen window
+    sma_exit_length: int = 5  # SMA for exit signal
+    
+    # Entry parameters
+    entry_delay: int = 1  # Condition must be true DELAY bars ago
+    
+    # Exit parameters
+    max_time: int = 6  # Max bars to hold position
+    
+    # Risk management
+    risk_usd: float = 1100.0
+    max_position: int = 1
+    price_offset: float = 0.0  # Enter at market open
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            last_trade_date=self.contract_month,
+            data_symbol=self.data_symbol,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "rsi_length": self.rsi_length,
+            "rsi_low": self.rsi_low,
+            "rsi_high": self.rsi_high,
+            "vl_window": self.vl_window,
+            "sma_exit_length": self.sma_exit_length,
+            "entry_delay": self.entry_delay,
+            "max_time": self.max_time,
+        }
+
+
+# Instantiate default configuration
+BTC2_PARAMS = BTC2Params()
