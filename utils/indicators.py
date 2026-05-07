@@ -114,3 +114,20 @@ def value_highest(series: pd.Series, window: int) -> pd.Series:
         Series of rolling maximums
     """
     return series.rolling(window=window, min_periods=window).max()
+
+
+def value_open(series: pd.Series, window: int) -> pd.Series:
+    """
+    ValueOpen - rolling minimum of Open prices.
+    
+    In TradeStation, ValueOpen(N) is the lowest Open over N bars.
+    Equivalent to Lowest(Open, N).
+    
+    Args:
+        series: Open price series
+        window: Lookback window
+        
+    Returns:
+        Series of rolling minimums of Open
+    """
+    return series.rolling(window=window, min_periods=window).min()

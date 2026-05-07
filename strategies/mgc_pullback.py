@@ -39,6 +39,62 @@ class MGCPullbackStrategy(BaseStrategy):
         self._rsi_len: int = p.get("rsi_length", 2)
         self._rsi_thresh: float = p.get("rsi_threshold", 30)
         self._exit_ma_len: int = p.get("exit_ma_length", 32)
+        
+        # Position state tracking
+        self._position_state = self._load_position_state()
+
+    def _load_position_state(self) -> dict:
+        """Load position state from database."""
+        # Try to load from position_state table first
+        pos_state = self.db.get_position_state(self.name, self.spec.symbol)
+        
+        if pos_state:
+            return {
+                "in_position": True,
+                "entry_bar_date": pos_state.get("entry_bar_date"),
+                "entry_price": pos_state.get("entry_price", 0.0),
+                "bars_held": pos_state.get("bars_held", 0),
+            }
+        
+        # Fallback to open_trade table for backward compatibility
+        open_trade = self.db.get_open_trade(self.name)
+        if not open_trade:
+            return {
+                "in_position": False,
+                "entry_bar_date": None,
+                "entry_price": 0.0,
+                "bars_held": 0,
+            }
+        
+        return {
+            "in_position": True,
+            "entry_bar_date": open_trade.get("entry_time"),
+            "entry_price": open_trade.get("entry_price", 0.0),
+            "bars_held": 0,  # Will be incremented
+        }
+
+    def _save_position_state(self) -> None:
+        """Save current position state to database."""
+        self.db.upsert_position_state(
+            strategy_name=self.name,
+            symbol=self.spec.symbol,
+            entry_bar_date=self._position_state["entry_bar_date"],
+            entry_price=self._position_state["entry_price"],
+            bars_held=self._position_state["bars_held"],
+        )
+
+    def _delete_position_state(self) -> None:
+        """Delete position state from database."""
+        self.db.delete_position_state(self.name, self.spec.symbol)
+
+    def _reset_position_state(self) -> None:
+        """Reset position state after exit."""
+        self._position_state = {
+            "in_position": False,
+            "entry_bar_date": None,
+            "entry_price": 0.0,
+            "bars_held": 0,
+        }
 
     # ── Hook implementations ─────────────────────────────────────────────
 
@@ -88,35 +144,96 @@ class MGCPullbackStrategy(BaseStrategy):
             "exit_up": exit_up,
         }
 
+        meta = {"date": str(last["date"])}
+
         self.log.info(
             "States  uptrend=%s  pullback=%s  exit_up=%s  pos=%d",
             uptrend, pullback, exit_up, current_pos,
         )
 
-        if current_pos == 0:# and uptrend and pullback:
+        # ── EXIT LOGIC (if in position) ──────────────────────────────────
+        
+        if current_pos > 0 or self._position_state["in_position"]:
+            state = self._position_state
+            state["bars_held"] += 1
+            
+            # Save state update
+            self._save_position_state()
+            
+            indicators["bars_held"] = state["bars_held"]
+            indicators["entry_price"] = round(state["entry_price"], 2)
+            
+            if exit_up:
+                self.log.info("EXIT: Close > SMA32 (bars=%d)", state["bars_held"])
+                self._reset_position_state()
+                self._delete_position_state()
+                return Signal(
+                    signal_type="EXIT_LONG",
+                    reason=f"Close > SMA32 (bars={state['bars_held']})",
+                    close_price=close,
+                    indicators=indicators,
+                    meta=meta,
+                )
+            
+            # Continue holding
+            self.log.info("HOLD: bars=%d (waiting for SMA32 cross)", state["bars_held"])
+            return Signal(
+                signal_type="NONE",
+                reason=f"Holding position (bars={state['bars_held']})",
+                close_price=close,
+                indicators=indicators,
+                meta=meta,
+            )
+
+        # ── ENTRY LOGIC (if flat) ────────────────────────────────────────
+        
+        if current_pos == 0 and uptrend and pullback:
+            # Safety check: ensure position_state agrees we're flat
+            if self._position_state["in_position"]:
+                self.log.warning("Skipping entry: position_state shows in_position=True despite current_pos=0")
+                return Signal(
+                    signal_type="NONE", 
+                    reason="Position state conflict",
+                    close_price=close,
+                    indicators=indicators,
+                    meta=meta,
+                )
+            
+            # Initialize position state
+            self._position_state = {
+                "in_position": True,
+                "entry_bar_date": str(last["date"]),
+                "entry_price": close,  # Will be updated with actual fill
+                "bars_held": 0,
+            }
+            
+            # Save position state to database
+            self._save_position_state()
+            
+            self.log.info("ENTRY: UpTrend & Pullback (RSI2=%.2f < %.1f)", rsi2, self._rsi_thresh)
             return Signal(
                 signal_type="ENTRY_LONG",
                 reason="UpTrend & Pullback (RSI2 < 30)",
                 close_price=close,
                 indicators=indicators,
-                meta={"date": str(last["date"])},
+                meta=meta,
             )
 
-        if current_pos > 0 and exit_up:
-            return Signal(
-                signal_type="EXIT_LONG",
-                reason="Close > SMA32",
-                close_price=close,
-                indicators=indicators,
-                meta={"date": str(last["date"])},
-            )
-
+        # No signal
+        reason_parts = []
+        if not uptrend:
+            reason_parts.append("no uptrend")
+        if not pullback:
+            reason_parts.append(f"RSI2={rsi2:.1f} >= {self._rsi_thresh}")
+        
+        reason = "No signal: " + ", ".join(reason_parts) if reason_parts else "No actionable signal"
+        
         return Signal(
             signal_type="NONE",
-            reason="No actionable signal",
+            reason=reason,
             close_price=close,
             indicators=indicators,
-            meta={"date": str(last["date"])},
+            meta=meta,
         )
 
     

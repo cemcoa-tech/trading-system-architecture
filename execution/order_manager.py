@@ -114,6 +114,7 @@ class OrderManager:
         order = LimitOrder(action, quantity, lp)
         order.account = self._account
         order.outsideRth = True
+        order.tif = 'GTC'
         self._ib.placeOrder(contract, order)
         self._ib.waitOnUpdate()
         log.info("Exit order placed: %s %d @ %.2f", action, quantity, lp)
