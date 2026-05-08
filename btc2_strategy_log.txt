@@ -1,0 +1,149 @@
+[2026-05-07 08:54:26] INFO     | trading.main           | ============================================================
+[2026-05-07 08:54:26] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-07 08:54:26] INFO     | trading.main           | ============================================================
+[2026-05-07 08:54:26] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-07 08:54:26] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4002 (attempt 1/3)
+[2026-05-07 08:54:26] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4002 with clientId 8935...
+[2026-05-07 08:54:28] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 08:54:28] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-05-07 08:54:28] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-05-07 08:54:28] WARNING  | trading.broker         | Connection attempt 1 failed: [WinError 1225] The remote computer refused the network connection
+[2026-05-07 08:54:33] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4002 (attempt 2/3)
+[2026-05-07 08:54:33] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4002 with clientId 8935...
+[2026-05-07 08:54:35] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 08:54:35] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-05-07 08:54:35] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-05-07 08:54:35] WARNING  | trading.broker         | Connection attempt 2 failed: [WinError 1225] The remote computer refused the network connection
+[2026-05-07 08:54:40] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4002 (attempt 3/3)
+[2026-05-07 08:54:40] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4002 with clientId 8935...
+[2026-05-07 08:54:42] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 08:54:42] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-05-07 08:54:42] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-05-07 08:54:42] WARNING  | trading.broker         | Connection attempt 3 failed: [WinError 1225] The remote computer refused the network connection
+[2026-05-07 08:54:42] CRITICAL | trading.main           | Could not connect to IBKR - aborting
+[2026-05-07 08:54:42] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-07 08:54:42] INFO     | trading.db             | Database connection closed
+[2026-05-07 08:56:16] INFO     | trading.main           | ============================================================
+[2026-05-07 08:56:16] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-07 08:56:16] INFO     | trading.main           | ============================================================
+[2026-05-07 08:56:16] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-07 08:56:16] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4002 (attempt 1/3)
+[2026-05-07 08:56:16] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4002 with clientId 8935...
+[2026-05-07 08:56:16] INFO     | ib_insync.client       | Connected
+[2026-05-07 08:56:16] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-07 08:56:16] INFO     | ib_insync.client       | API connection ready
+[2026-05-07 08:56:16] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfarm
+[2026-05-07 08:56:16] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-07 08:56:16] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefil
+[2026-05-07 08:56:16] INFO     | ib_insync.wrapper      | position: Position(account='DUM165609', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=-1.0, avgCost=8206.98)
+[2026-05-07 08:56:17] INFO     | ib_insync.wrapper      | updatePortfolio: PortfolioItem(contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', right='0', multiplier='0.1', primaryExchange='CME', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=-1.0, marketPrice=81041.0703125, marketValue=-8104.11, averageCost=8206.98, unrealizedPNL=102.87, realizedPNL=0.0, account='DUM165609')
+[2026-05-07 08:56:17] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-07 08:56:17] INFO     | trading.broker         | Connected to IBKR
+[2026-05-07 08:56:17] INFO     | trading.strategy.BTC2_ValueLow_SMA | ==================================================
+[2026-05-07 08:56:17] INFO     | trading.strategy.BTC2_ValueLow_SMA | EXECUTING STRATEGY: BTC2_ValueLow_SMA
+[2026-05-07 08:56:17] INFO     | trading.strategy.BTC2_ValueLow_SMA | ==================================================
+[2026-05-07 08:56:17] INFO     | trading.strategy.BTC2_ValueLow_SMA | [1] Qualifying contracts...
+[2026-05-07 08:56:18] INFO     | trading.broker         | Qualified contract: MBTM6  conId=751357008
+[2026-05-07 08:56:18] INFO     | trading.broker         | Qualified contract: MBTM6  conId=751357008
+[2026-05-07 08:56:18] INFO     | trading.strategy.BTC2_ValueLow_SMA | [2] Fetching historical data...
+[2026-05-07 08:56:26] INFO     | trading.broker         | Fetched 626 historical bars for MBTK6
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | [3] Computing indicators...
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | Last bar  date=2026-05-07  close=80685.00  RSI2=38.90  VL5=76505.00  VO5=76555.00  SMA5=80706.00  Cond1=False
+Account: DUM165609 == DUM165609 ? True
+Config account: DUM165609
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | Current position: -1
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | [4] Generating signal...
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | Signal: NONE  reason=No actionable signal (condition1 not met with delay)
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | No order required
+Account: DUM165609 == DUM165609 ? True
+Config account: DUM165609
+[2026-05-07 08:56:26] INFO     | trading.strategy.BTC2_ValueLow_SMA | EXECUTION COMPLETE for BTC2_ValueLow_SMA
+[2026-05-07 08:56:26] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4002, 373 B sent in 12 messages, 56.9 kB received in 316 messages, session time 9.98 s.
+[2026-05-07 08:56:26] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 08:56:26] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-07 08:56:26] INFO     | trading.db             | Database connection closed
+[2026-05-07 08:56:26] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-07 09:03:52] INFO     | trading.main           | ============================================================
+[2026-05-07 09:03:52] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-07 09:03:52] INFO     | trading.main           | ============================================================
+[2026-05-07 09:03:52] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-07 09:03:52] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4002 (attempt 1/3)
+[2026-05-07 09:03:52] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4002 with clientId 8935...
+[2026-05-07 09:03:52] INFO     | ib_insync.client       | Connected
+[2026-05-07 09:03:52] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-07 09:03:52] INFO     | ib_insync.client       | API connection ready
+[2026-05-07 09:03:52] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfarm
+[2026-05-07 09:03:52] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.ushmds
+[2026-05-07 09:03:52] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefil
+[2026-05-07 09:03:52] INFO     | ib_insync.wrapper      | position: Position(account='DUM165609', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=-1.0, avgCost=8206.98)
+[2026-05-07 09:03:53] INFO     | ib_insync.wrapper      | updatePortfolio: PortfolioItem(contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', right='0', multiplier='0.1', primaryExchange='CME', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=-1.0, marketPrice=81046.0703125, marketValue=-8104.61, averageCost=8206.98, unrealizedPNL=102.37, realizedPNL=0.0, account='DUM165609')
+[2026-05-07 09:03:53] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-07 09:03:53] INFO     | trading.broker         | Connected to IBKR
+[2026-05-07 09:03:53] INFO     | trading.strategy.BTC2_ValueLow_SMA | ==================================================
+[2026-05-07 09:03:53] INFO     | trading.strategy.BTC2_ValueLow_SMA | EXECUTING STRATEGY: BTC2_ValueLow_SMA
+[2026-05-07 09:03:53] INFO     | trading.strategy.BTC2_ValueLow_SMA | ==================================================
+[2026-05-07 09:03:53] INFO     | trading.strategy.BTC2_ValueLow_SMA | [1] Qualifying contracts...
+[2026-05-07 09:03:53] INFO     | trading.broker         | Qualified contract: MBTM6  conId=751357008
+[2026-05-07 09:03:53] INFO     | trading.broker         | Qualified contract: MBTM6  conId=751357008
+[2026-05-07 09:03:53] INFO     | trading.strategy.BTC2_ValueLow_SMA | [2] Fetching historical data...
+[2026-05-07 09:03:55] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-07 09:04:02] INFO     | trading.broker         | Fetched 626 historical bars for MBTK6
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | [3] Computing indicators...
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | Last bar  date=2026-05-07  close=80640.00  RSI2=38.01  VL5=76505.00  VO5=76555.00  SMA5=80697.00  Cond1=False
+Account: DUM165609 == DUM165609 ? True
+Config account: DUM165609
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | Current position: -1
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | [4] Generating signal...
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | Signal: NONE  reason=No actionable signal (condition1 not met with delay)
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | No order required
+Account: DUM165609 == DUM165609 ? True
+Config account: DUM165609
+[2026-05-07 09:04:02] INFO     | trading.strategy.BTC2_ValueLow_SMA | EXECUTION COMPLETE for BTC2_ValueLow_SMA
+[2026-05-07 09:04:02] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4002, 373 B sent in 12 messages, 57.0 kB received in 317 messages, session time 9.84 s.
+[2026-05-07 09:04:02] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 09:04:02] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-07 09:04:02] INFO     | trading.db             | Database connection closed
+[2026-05-07 09:04:02] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-07 16:58:43] INFO     | trading.main           | ============================================================
+[2026-05-07 16:58:43] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-07 16:58:43] INFO     | trading.main           | ============================================================
+[2026-05-07 16:58:43] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-07 16:58:43] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-07 16:58:43] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-07 16:58:43] INFO     | ib_insync.client       | Connected
+[2026-05-07 16:58:43] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-07 16:58:43] INFO     | ib_insync.client       | API connection ready
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=12.0, avgCost=36080.13034165)
+[2026-05-07 16:58:43] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=0.0, avgCost=0.0)
+[2026-05-07 16:58:43] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-07 16:58:43] INFO     | trading.broker         | Connected to IBKR
+[2026-05-07 16:58:43] INFO     | trading.strategy.BTC2_ValueLow_SMA | ==================================================
+[2026-05-07 16:58:43] INFO     | trading.strategy.BTC2_ValueLow_SMA | EXECUTING STRATEGY: BTC2_ValueLow_SMA
+[2026-05-07 16:58:43] INFO     | trading.strategy.BTC2_ValueLow_SMA | ==================================================
+[2026-05-07 16:58:43] INFO     | trading.strategy.BTC2_ValueLow_SMA | [1] Qualifying contracts...
+[2026-05-07 16:58:43] INFO     | trading.broker         | Qualified contract: MBTM6  conId=751357008
+[2026-05-07 16:58:43] INFO     | trading.broker         | Qualified contract: MBTM6  conId=751357008
+[2026-05-07 16:58:43] INFO     | trading.strategy.BTC2_ValueLow_SMA | [2] Fetching historical data...
+[2026-05-07 16:58:50] INFO     | trading.broker         | Fetched 626 historical bars for MBTK6
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | [3] Computing indicators...
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | Last bar  date=2026-05-07  close=80110.00  RSI2=29.96  VL5=76505.00  VO5=76555.00  SMA5=80591.00  Cond1=False
+Account: U16668533 == U22862141 ? False
+Config account: U22862141
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | Current position: 0
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | [4] Generating signal...
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | Signal: NONE  reason=No actionable signal (condition1 not met with delay)
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | No order required
+Account: U16668533 == U22862141 ? False
+Config account: U22862141
+[2026-05-07 16:58:50] INFO     | trading.strategy.BTC2_ValueLow_SMA | EXECUTION COMPLETE for BTC2_ValueLow_SMA
+[2026-05-07 16:58:50] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 397 B sent in 13 messages, 79.3 kB received in 749 messages, session time 7.40 s.
+[2026-05-07 16:58:50] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 16:58:50] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-07 16:58:50] INFO     | trading.db             | Database connection closed
+[2026-05-07 16:58:50] INFO     | trading.main           | ALL STRATEGIES COMPLETE

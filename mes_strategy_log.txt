@@ -393,3 +393,47 @@ Config account: U22862141
 [2026-05-06 16:57:56] INFO     | trading.broker         | Disconnected from IBKR
 [2026-05-06 16:57:56] INFO     | trading.db             | Database connection closed
 [2026-05-06 16:57:56] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-07 16:57:52] INFO     | trading.main           | ============================================================
+[2026-05-07 16:57:52] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-07 16:57:52] INFO     | trading.main           | ============================================================
+[2026-05-07 16:57:52] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-07 16:57:52] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-07 16:57:52] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-07 16:57:52] INFO     | ib_insync.client       | Connected
+[2026-05-07 16:57:52] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-07 16:57:52] INFO     | ib_insync.client       | API connection ready
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=12.0, avgCost=36080.13034165)
+[2026-05-07 16:57:52] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=0.0, avgCost=0.0)
+[2026-05-07 16:57:52] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-07 16:57:52] INFO     | trading.broker         | Connected to IBKR
+[2026-05-07 16:57:52] INFO     | trading.strategy.MES_Condition1 | ==================================================
+[2026-05-07 16:57:52] INFO     | trading.strategy.MES_Condition1 | EXECUTING STRATEGY: MES_Condition1
+[2026-05-07 16:57:52] INFO     | trading.strategy.MES_Condition1 | ==================================================
+[2026-05-07 16:57:52] INFO     | trading.strategy.MES_Condition1 | [1] Qualifying contracts...
+[2026-05-07 16:57:53] INFO     | trading.broker         | Qualified contract: ESM6  conId=649180678
+[2026-05-07 16:57:53] INFO     | trading.broker         | Qualified contract: ESM6  conId=649180678
+[2026-05-07 16:57:53] INFO     | trading.strategy.MES_Condition1 | [2] Fetching historical data...
+[2026-05-07 16:57:56] INFO     | trading.broker         | Fetched 1058 historical bars for ESM6
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | [3] Computing indicators...
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | Last bar  date=2026-05-07  close=7363.00  ROC5=0.0165  EMA3=7343.76  ATR=94.73  Cond1=False
+Account: U16668533 == U22862141 ? False
+Config account: U22862141
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | Current position: 0
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | [4] Generating signal...
+current_pos: 0
+position_state: {'in_position': False, 'entry_bar_date': None, 'entry_price': 0.0, 'profitable_closes': 0, 'bars_held': 0, 'tp_price': 0.0, 'sl_price': 0.0}
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | Signal: NONE  reason=No actionable signal
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | No order required
+Account: U16668533 == U22862141 ? False
+Config account: U22862141
+[2026-05-07 16:57:56] INFO     | trading.strategy.MES_Condition1 | EXECUTION COMPLETE for MES_Condition1
+[2026-05-07 16:57:56] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 390 B sent in 13 messages, 94.3 kB received in 385 messages, session time 4.66 s.
+[2026-05-07 16:57:56] INFO     | ib_insync.client       | Disconnecting
+[2026-05-07 16:57:56] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-07 16:57:56] INFO     | trading.db             | Database connection closed
+[2026-05-07 16:57:56] INFO     | trading.main           | ALL STRATEGIES COMPLETE

@@ -387,10 +387,6 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
             meta=meta,
         )
 
-    def get_position_size(self, signal: Signal) -> int:
-        """Fixed position size (1 contract for BTC)."""
-        return self.params.max_position
-
     def _execute_signal(self, signal: Signal, contract, current_pos: int) -> None:
         """
         Execute trading signal.
@@ -402,7 +398,7 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
             self.log.info("No order required")
             return
         
-        # Get indicative price (use signal's close_price as it's the open)
+        # Get indicative price (use signal's close_price as it's for open)
         fallback = signal.close_price
         price, source = self.broker.get_indicative_price(contract, fallback)
         self.log.info("Indicative price: %.2f (%s)", price, source)
