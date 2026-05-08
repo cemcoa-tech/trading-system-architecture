@@ -327,7 +327,7 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
         delay_idx = len(df) - 1 - self._entry_delay  # Current bar minus delay
         
         if delay_idx >= 0 and delay_idx < len(df):
-            condition1_delayed = True #bool(df.iloc[delay_idx].get("condition1", False))
+            condition1_delayed = bool(df.iloc[delay_idx].get("condition1", False))
             # print("delay_idx :--",delay_idx)
             # print(df.tail(10))
             # print("delay idx",df.iloc[delay_idx])

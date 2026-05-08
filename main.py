@@ -53,8 +53,9 @@ from strategies.mnq_condition1 import MNQCondition1Strategy
 from strategies.mes_condition1 import MESCondition1Strategy
 from strategies.btc_rsi_meanrev import BTCRSIMeanRevStrategy
 from strategies.btc2_valuelow_sma import BTC2ValueLowSMAStrategy
-
-# ... (existing imports)
+from strategies.treasury_zn_eom import TreasuryZNEOMStrategy
+from strategies.treasury_30y_eom import Treasury30YEOMStrategy
+from strategies.treasury_stoch_hurst import TreasuryStochHurstStrategy
 
 def build_strategies(
     broker: Broker,
@@ -72,6 +73,9 @@ def build_strategies(
         MES_CONDITION1_PARAMS,
         BTC_RSI_PARAMS,
         BTC2_PARAMS,
+        TREASURY_EOM_PARAMS,
+        TREASURY_30Y_EOM_PARAMS,
+        TREASURY_STOCH_HURST_PARAMS,
     )
     
     registry = {
@@ -80,6 +84,9 @@ def build_strategies(
         "mes": (MES_CONDITION1_PARAMS, MESCondition1Strategy),
         "btc": (BTC_RSI_PARAMS, BTCRSIMeanRevStrategy),
         "btc2": (BTC2_PARAMS, BTC2ValueLowSMAStrategy),
+        "zn": (TREASURY_EOM_PARAMS, TreasuryZNEOMStrategy),
+        "zb": (TREASURY_30Y_EOM_PARAMS, Treasury30YEOMStrategy),
+        "zb_stoch": (TREASURY_STOCH_HURST_PARAMS, TreasuryStochHurstStrategy),
     }
 
     strategies: List[BaseStrategy] = []

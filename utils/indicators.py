@@ -7,6 +7,8 @@ Every indicator returns a pd.Series aligned with the input index.
 
 import numpy as np
 import pandas as pd
+from dataclasses import dataclass, field
+from typing import Dict, Any
 
 
 def sma(series: pd.Series, length: int) -> pd.Series:
@@ -120,8 +122,7 @@ def value_open(series: pd.Series, window: int) -> pd.Series:
     """
     ValueOpen - rolling minimum of Open prices.
     
-    In TradeStation, ValueOpen(N) is the lowest Open over N bars.
-    Equivalent to Lowest(Open, N).
+    In TradeStation, ValueLow/ValueOpen indicator (ratio of rolling min to Open).
     
     Args:
         series: Open price series
@@ -131,3 +132,167 @@ def value_open(series: pd.Series, window: int) -> pd.Series:
         Series of rolling minimums of Open
     """
     return series.rolling(window=window, min_periods=window).min()
+
+
+def stochastic(high: pd.Series, low: pd.Series, close: pd.Series, length: int) -> pd.Series:
+    """
+    Stochastic oscillator.
+    
+    Args:
+        high: High price series
+        low: Low price series  
+        close: Close price series
+        length: Lookback period
+        
+    Returns:
+        Stochastic oscillator values (0-100)
+    """
+    lowest_low = low.rolling(window=length).min()
+    highest_high = high.rolling(window=length).max()
+    
+    # Avoid division by zero
+    denominator = highest_high - lowest_low
+    denominator = denominator.replace(0, np.nan)
+    
+    k_percent = 100 * (close - lowest_low) / denominator
+    return k_percent.fillna(50)  # Default to middle when no data
+
+
+def hurst_exponent(high: pd.Series, low: pd.Series, close: pd.Series, length: int) -> pd.Series:
+    """
+    Simplified Hurst exponent calculation based on price range analysis.
+    
+    The Hurst exponent measures trend persistence:
+    - H > 0.5: Persistent/trending
+    - H = 0.5: Random walk
+    - H < 0.5: Anti-persistent/mean-reverting
+    
+    Args:
+        high: High price series
+        low: Low price series
+        close: Close price series
+        length: Lookback period
+        
+    Returns:
+        Hurst exponent values (typically 0-1)
+    """
+    # Use price range as a proxy for volatility
+    price_range = high - low
+    avg_range = price_range.rolling(window=length).mean()
+    
+    # Calculate normalized price movement
+    price_change = close.diff().abs()
+    avg_change = price_change.rolling(window=length).mean()
+    
+    # Simple Hurst approximation based on range persistence
+    # Higher persistent ranges suggest trending behavior (H > 0.5)
+    # Lower ranges suggest mean-reversion (H < 0.5)
+    
+    # Normalize the ratio to get values roughly between 0.3 and 0.7
+    hurst = 0.5 + 0.2 * np.tanh((avg_range / avg_change - 2) / 2)
+    
+    return hurst.fillna(0.5)  # Default to random walk when no data
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  TREASURY STOCHASTIC HURST STRATEGY (ZB → MWN)
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass
+class TreasuryStochHurstParams:
+    """
+    Treasury Stochastic Hurst Strategy
+    
+    Signal: ZB (30-Year Treasury)
+    Execution: MWN (Micro 30-Year Note)
+    
+    Entry:
+        - Stochastic(14) crosses below 60 threshold
+        - Hurst exponent rising (H[0] > H[5])
+        - Uses 1-bar delay confirmation
+    
+    Exit:
+        - RSI(2) >= 70 (signal exit)
+        - BarsSinceEntry >= max_time - 1 (time exit)
+    
+    Direction: Long-only
+    """
+    
+    # Strategy identification
+    name: str = "Treasury_Stoch_Hurst"
+    
+    # Signal contract (ZB - 30-Year Bond)
+    signal_symbol: str = "ZB"
+    signal_contract_month: str = "202606"
+    
+    # Execution contract (MWN - Micro 30-Year Note)
+    symbol: str = "MTN"  # MWN actual symbol is MTN
+    data_symbol: str = "MTN"
+    contract_month: str = "202606"
+    exchange: str = "CBOT"
+    currency: str = "USD"
+    tick_size: float = 1/64  # Treasury tick
+    point_value: float = 100.0  # MWN = $100 per point (1/10 of ZB)
+    
+    # Data fetching
+    duration: str = "120 D"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    stoch_length: int = 14
+    stoch_threshold: float = 60.0  # Cross below this level
+    hurst_length: int = 20
+    hurst_lookback: int = 5  # H[0] > H[5]
+    rsi_length: int = 2
+    rsi_exit_threshold: float = 70.0
+    
+    # Entry parameters
+    entry_delay: int = 1  # Condition must be true DELAY bars ago
+    
+    # Exit parameters
+    max_time: int = 9  # Max bars to hold position
+    
+    # Execution parameters
+    price_offset_ticks: int = 2  # Offset in ticks for limit orders
+    price_offset: float = 0.0  # Will be calculated from ticks
+    
+    # Risk management
+    risk_usd: float = 1100.0
+    max_position: int = 1
+    
+    def __post_init__(self):
+        """Calculate price_offset from ticks."""
+        self.price_offset = self.price_offset_ticks * self.tick_size
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            data_symbol=self.data_symbol,
+            contract_month=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+            price_offset=self.price_offset,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "signal_symbol": self.signal_symbol,
+            "signal_contract_month": self.signal_contract_month,
+            "stoch_length": self.stoch_length,
+            "stoch_threshold": self.stoch_threshold,
+            "hurst_length": self.hurst_length,
+            "hurst_lookback": self.hurst_lookback,
+            "rsi_length": self.rsi_length,
+            "rsi_exit_threshold": self.rsi_exit_threshold,
+            "entry_delay": self.entry_delay,
+            "max_time": self.max_time,
+            "price_offset_ticks": self.price_offset_ticks,
+        }
+
+
+# Instantiate default configuration
+TREASURY_STOCH_HURST_PARAMS = TreasuryStochHurstParams()
