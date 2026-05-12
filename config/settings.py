@@ -451,7 +451,6 @@ class BTC2Params:
 
 # Instantiate default configuration
 BTC2_PARAMS = BTC2Params()
-<<<<<<< HEAD
 
 # Alternative configuration for U20859646 account
 BTC2_PARAMS_ALT = BTC2Params()
@@ -810,5 +809,3 @@ class RBCombinedParams:
 
 # Instantiate default configuration
 RB_COMBINED_PARAMS = RBCombinedParams()
-=======
->>>>>>> 2151826ca1cd22e856221f1db6c61d9e273e346a
