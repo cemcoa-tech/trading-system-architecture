@@ -25,7 +25,7 @@ class IBKRConfig:
     host: str = "127.0.0.1"
     port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8935
-    account: str = "DUM165609"#"#U22862141
+    account: str = "U22862141"#DUM165609"#U22862141
     connect_timeout: float = 15.0
     max_retries: int = 3
     retry_delay: float = 5.0
@@ -125,7 +125,7 @@ class StrategyParams:
     contract_spec: ContractSpec
     params: Dict[str, Any] = field(default_factory=dict)
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 10
 
 
 MGC_PULLBACK_PARAMS = StrategyParams(
@@ -198,7 +198,7 @@ class MNQCondition1Params:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 10
     price_offset: float = 0.0  # Enter at market
     
     @property
@@ -269,7 +269,7 @@ class MESCondition1Params:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 10
     price_offset: float = 0.0
     
     @property
@@ -338,7 +338,7 @@ class BTCRSIParams:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 10
     price_offset: float = 0.0  # Enter at market open
     
     @property
@@ -421,7 +421,7 @@ class BTC2Params:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 10
     price_offset: float = 0.0  # Enter at market open
     
     @property
@@ -451,6 +451,7 @@ class BTC2Params:
 
 # Instantiate default configuration
 BTC2_PARAMS = BTC2Params()
+<<<<<<< HEAD
 
 # Alternative configuration for U20859646 account
 BTC2_PARAMS_ALT = BTC2Params()
@@ -809,3 +810,5 @@ class RBCombinedParams:
 
 # Instantiate default configuration
 RB_COMBINED_PARAMS = RBCombinedParams()
+=======
+>>>>>>> 2151826ca1cd22e856221f1db6c61d9e273e346a
