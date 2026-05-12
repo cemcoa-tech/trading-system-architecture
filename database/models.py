@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS trades (
     exit_time       TEXT,
     tp_price        REAL,
     sl_price        REAL,
+    atr_entry       REAL,                         -- ATR at entry for stop/target calculations
+    bars_held       INTEGER DEFAULT 0,             -- Number of bars held in position
     pnl             REAL,
     status          TEXT    NOT NULL DEFAULT 'OPEN',  -- OPEN | CLOSED | CANCELLED
     created_at      TEXT    NOT NULL DEFAULT (datetime('now')),

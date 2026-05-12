@@ -47,8 +47,9 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
         broker: Broker,
         order_mgr: OrderManager,
         db: DatabaseManager,
+        account: str,
     ) -> None:
-        super().__init__(params, broker, order_mgr, db)
+        super().__init__(params, broker, order_mgr, db, account)
         
         # Unpack strategy-specific parameters
         p = params.params

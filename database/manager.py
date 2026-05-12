@@ -143,6 +143,39 @@ class DatabaseManager:
             )
             return cur.lastrowid  # type: ignore[return-value]
 
+    def update_trade(
+        self,
+        trade_id: int,
+        bars_held: Optional[int] = None,
+        atr_entry: Optional[float] = None,
+    ) -> None:
+        """Update trade metadata like bars_held and atr_entry."""
+        updates = []
+        params = []
+        
+        if bars_held is not None:
+            updates.append("bars_held = ?")
+            params.append(bars_held)
+        
+        if atr_entry is not None:
+            updates.append("atr_entry = ?")
+            params.append(atr_entry)
+        
+        if not updates:
+            return
+        
+        params.append(trade_id)
+        
+        with self._cursor() as cur:
+            cur.execute(
+                f"""
+                UPDATE trades
+                SET {', '.join(updates)}, updated_at = datetime('now')
+                WHERE id = ?
+                """,
+                params,
+            )
+
     def close_trade(
         self,
         trade_id: int,

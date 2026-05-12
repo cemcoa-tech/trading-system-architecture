@@ -50,8 +50,9 @@ class TreasuryZNEOMStrategy(BaseStrategy):
         broker: Broker,
         order_mgr: OrderManager,
         db: DatabaseManager,
+        account: str,
     ) -> None:
-        super().__init__(params, broker, order_mgr, db)
+        super().__init__(params, broker, order_mgr, db, account)
         
         # Unpack strategy-specific parameters
         p = params.params
@@ -243,7 +244,7 @@ class TreasuryZNEOMStrategy(BaseStrategy):
             # Calculate actual bars held based on dates (handles gaps between runs)
             if state["entry_bar_date"]:
                 entry_date = pd.to_datetime(state["entry_bar_date"]).date()
-                current_date = today.date()
+                current_date = today
                 actual_bars_held = (current_date - entry_date).days
                 
                 # Only count trading days (weekends excluded)

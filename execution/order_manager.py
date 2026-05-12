@@ -24,9 +24,8 @@ class OrderManager:
     All sizing / tick logic is contract-aware through ContractSpec.
     """
 
-    def __init__(self, ib: IB, account: str) -> None:
+    def __init__(self, ib: IB) -> None:
         self._ib = ib
-        self._account = account
 
     # ── Tick rounding ────────────────────────────────────────────────────
     @staticmethod
@@ -61,6 +60,7 @@ class OrderManager:
         limit_price: float,
         tp_price: float,
         sl_price: float,
+        account: str,
     ) -> Dict[str, float]:
         """
         Place a bracket order (parent limit + TP limit + SL stop).
@@ -74,7 +74,7 @@ class OrderManager:
         print("Bracket::::::::::::", bracket)
         for o in bracket:
             print("Order::::::::::::", o)
-            o.account = self._account
+            o.account = account
             o.outsideRth = True
         # TP and SL are GTC; parent only transmits last
         bracket[0].transmit = False
@@ -106,13 +106,14 @@ class OrderManager:
         action: str,
         quantity: int,
         limit_price: float,
+        account: str,
     ) -> float:
         """Place a simple limit order to flatten a position."""
         self.cancel_open_bracket_legs(contract, include_parent=False)
         
         lp = self.round_tick(limit_price, spec.tick_size)
         order = LimitOrder(action, quantity, lp)
-        order.account = self._account
+        order.account = account
         order.outsideRth = True
         order.tif = 'GTC'
         self._ib.placeOrder(contract, order)

@@ -31,6 +31,18 @@ class IBKRConfig:
     retry_delay: float = 5.0
 
 
+@dataclass(frozen=True)
+class IBKRConfigAlt:
+    """Alternative IBKR configuration for U20859646 account."""
+    host: str = "127.0.0.1"
+    port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
+    client_id: int = 8936  # Different client ID to avoid conflicts
+    account: str = "U20859646"
+    connect_timeout: float = 15.0
+    max_retries: int = 3
+    retry_delay: float = 5.0
+
+
 # ── Market Data ──────────────────────────────────────────────────────────────
 @dataclass(frozen=True)
 class MarketDataConfig:
@@ -440,6 +452,9 @@ class BTC2Params:
 # Instantiate default configuration
 BTC2_PARAMS = BTC2Params()
 
+# Alternative configuration for U20859646 account
+BTC2_PARAMS_ALT = BTC2Params()
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  TREASURY ZN END-OF-MONTH STRATEGY PARAMETERS
@@ -693,3 +708,104 @@ class TreasuryStochHurstParams:
 
 # Instantiate default configuration
 TREASURY_STOCH_HURST_PARAMS = TreasuryStochHurstParams()
+
+# Alternative configuration for U20859646 account
+TREASURY_STOCH_HURST_PARAMS_ALT = TreasuryStochHurstParams()
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  RB COMBINED LONG/SHORT STRATEGY
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass
+class RBCombinedParams:
+    """
+    RB (RBOB Gasoline) Combined Long/Short Strategy
+    
+    Long Entry:
+        - ValueOpen(5)[0] <= ValueLow(5)[5]  (open <= low 5 bars ago)
+        - ADX(20) <= 15  (low ADX = ranging market)
+        - Uses DELAY confirmation
+    
+    Short Entry:
+        - Low[2] > High[6]  (gap up)
+        - Thursday only
+        - Uses DELAY confirmation
+    
+    Exits:
+        - ATR-based stop loss and profit target
+        - Stop: entry ± ATR * 3
+        - Target: entry ± ATR * 6
+        - Time exits: 9 bars (long) / 3 bars (short)
+    
+    Direction: Long and Short
+    """
+    
+    # Strategy identification
+    name: str = "RB_Combined"
+    
+    # Contract specifications
+    symbol: str = "RB"
+    data_symbol: str = "RB"
+    contract_month: str = "202606"  # Update monthly
+    exchange: str = "NYMEX"
+    currency: str = "USD"
+    tick_size: float = 0.0001  # RB = $0.0001 per gallon
+    point_value: float = 42000.0  # 42,000 gallons per contract
+    
+    # Data fetching
+    duration: str = "180 D"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    atr_length: int = 14
+    atr_mult_stop: float = 3.0  # Stop loss = entry ± ATR * 3
+    atr_mult_target: float = 6.0  # Target = entry ± ATR * 6
+    adx_length: int = 20
+    adx_threshold: float = 15.0  # Long entry when ADX <= 15
+    
+    # Entry parameters
+    entry_delay: int = 1  # Condition must be true DELAY bars ago
+    value_lookback: int = 5  # For ValueOpen/ValueLow checks
+    
+    # Exit parameters
+    max_time_long: int = 9  # Max bars to hold long position
+    max_time_short: int = 3  # Max bars to hold short position
+    
+    # Execution parameters
+    price_offset: float = 0.10  # Aggressive offset for fills
+    
+    # Risk management
+    risk_usd: float = 1100.0
+    max_position: int = 1
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            data_symbol=self.data_symbol,
+            last_trade_date=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+            price_offset=self.price_offset,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "atr_length": self.atr_length,
+            "atr_mult_stop": self.atr_mult_stop,
+            "atr_mult_target": self.atr_mult_target,
+            "adx_length": self.adx_length,
+            "adx_threshold": self.adx_threshold,
+            "entry_delay": self.entry_delay,
+            "value_lookback": self.value_lookback,
+            "max_time_long": self.max_time_long,
+            "max_time_short": self.max_time_short,
+        }
+
+
+# Instantiate default configuration
+RB_COMBINED_PARAMS = RBCombinedParams()

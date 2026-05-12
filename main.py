@@ -17,6 +17,7 @@ import signal
 import sys
 import time
 from typing import List
+from config.settings import IBKRConfigAlt
 
 from config.settings import (
     DB_PATH,
@@ -32,6 +33,8 @@ from execution.order_manager import OrderManager
 from strategies.mgc_pullback import MGCPullbackStrategy
 from strategies.base_strategy import BaseStrategy
 from utils.logger import get_logger, setup_logging
+from utils.notifications import init_notifications, notify_strategy_execution, notify_system
+from datetime import datetime
 
 
 # Global flag for graceful shutdown
@@ -46,6 +49,25 @@ def signal_handler(signum, frame):
     log.info("Shutdown signal received, stopping continuous trading...")
 
 
+def get_strategy_account(strategy_name: str) -> str:
+    """Determine which account to use for order placement based on strategy."""
+    # Account mapping for order placement
+    account_mapping = {
+        "U20859646": ["btc2", "zb_stoch", "BTC2_ValueLow_SMA", "Treasury_Stoch_Hurst"],
+        "U22862141": ["mgc", "mnq", "mes", "btc", "zn", "zb", "rb"]
+    }
+    
+    # Check all possible keys for this strategy
+    for account, strategies in account_mapping.items():
+        if strategy_name in strategies:
+            print(f"Strategy {strategy_name} will use account {account} for orders")
+            return account
+    
+    # Default to standard account
+    print(f"Strategy {strategy_name} will use default account U22862141")
+    return "U22862141"
+
+
 # main.py (UPDATE the build_strategies function)
 
 from strategies.mgc_pullback import MGCPullbackStrategy
@@ -56,6 +78,7 @@ from strategies.btc2_valuelow_sma import BTC2ValueLowSMAStrategy
 from strategies.treasury_zn_eom import TreasuryZNEOMStrategy
 from strategies.treasury_30y_eom import Treasury30YEOMStrategy
 from strategies.treasury_stoch_hurst import TreasuryStochHurstStrategy
+from strategies.rb_combined import RBCombinedStrategy
 
 def build_strategies(
     broker: Broker,
@@ -68,14 +91,18 @@ def build_strategies(
     Each entry maps a short name → (ParamsObject, StrategyClass).
     """
     from config.settings import (
+        IBKRConfigAlt,
         MGC_PULLBACK_PARAMS,
         MNQ_CONDITION1_PARAMS,
         MES_CONDITION1_PARAMS,
         BTC_RSI_PARAMS,
         BTC2_PARAMS,
+        BTC2_PARAMS_ALT,
         TREASURY_EOM_PARAMS,
         TREASURY_30Y_EOM_PARAMS,
         TREASURY_STOCH_HURST_PARAMS,
+        TREASURY_STOCH_HURST_PARAMS_ALT,
+        RB_COMBINED_PARAMS,
     )
     
     registry = {
@@ -83,10 +110,14 @@ def build_strategies(
         "mnq": (MNQ_CONDITION1_PARAMS, MNQCondition1Strategy),
         "mes": (MES_CONDITION1_PARAMS, MESCondition1Strategy),
         "btc": (BTC_RSI_PARAMS, BTCRSIMeanRevStrategy),
-        "btc2": (BTC2_PARAMS, BTC2ValueLowSMAStrategy),
+        "btc2": (BTC2_PARAMS_ALT, BTC2ValueLowSMAStrategy),
         "zn": (TREASURY_EOM_PARAMS, TreasuryZNEOMStrategy),
         "zb": (TREASURY_30Y_EOM_PARAMS, Treasury30YEOMStrategy),
-        "zb_stoch": (TREASURY_STOCH_HURST_PARAMS, TreasuryStochHurstStrategy),
+        "zb_stoch": (TREASURY_STOCH_HURST_PARAMS_ALT, TreasuryStochHurstStrategy),
+        "rb": (RB_COMBINED_PARAMS, RBCombinedStrategy),
+        # Additional mappings for U20859646 account
+        "BTC2_ValueLow_SMA": (BTC2_PARAMS_ALT, BTC2ValueLowSMAStrategy),
+        "Treasury_Stoch_Hurst": (TREASURY_STOCH_HURST_PARAMS_ALT, TreasuryStochHurstStrategy),
     }
 
     strategies: List[BaseStrategy] = []
@@ -106,11 +137,15 @@ def build_strategies(
         else:
             strategy_params = params
         
+        # Get the account for this strategy
+        strategy_account = get_strategy_account(key)
+        
         strategies.append(cls(
             params=strategy_params,
             broker=broker,
             order_mgr=order_mgr,
-            db=db
+            db=db,
+            account=strategy_account
         ))
 
     return strategies
@@ -148,6 +183,16 @@ def run_continuous_trading(
                 try:
                     log.info("Checking strategy: %s", strat.name)
                     
+                    # Update broker account if needed for U20859646 strategies
+                    ibkr_cfg = get_ibkr_config(strat.name)
+                    if ibkr_cfg.account != broker.ibkr_cfg.account:
+                        log.info("Switching to account %s for strategy %s", ibkr_cfg.account, strat.name)
+                        # Reconnect with correct account
+                        broker.disconnect()
+                        broker.ibkr_cfg = ibkr_cfg
+                        broker.connect()
+                        order_mgr = OrderManager(broker.ib, ibkr_cfg.account)
+                    
                     # Register strategy
                     strat.db.upsert_strategy(strat.name, params=strat.params.params)
                     
@@ -175,11 +220,50 @@ def run_continuous_trading(
                             symbol=strat.spec.symbol,
                             quantity=new_pos,
                         )
+                        
+                        # Send execution notification
+                        notify_strategy_execution(
+                            strategy_name=strat.name,
+                            execution_time=datetime.now(),
+                            signal=sig.signal_type,
+                            position_size=sig.indicators.get('quantity', new_pos),
+                            entry_price=sig.close_price,
+                            exit_price=sig.close_price if sig.signal_type.startswith('EXIT') else None,
+                            pnl=None,  # Will be calculated on exit
+                            bars_held=sig.indicators.get('bars_held'),
+                            profitable_closes=sig.indicators.get('profitable_closes'),
+                            indicators={
+                                **sig.indicators,
+                                'current_pos': new_pos,
+                                'reason': sig.reason
+                            }
+                        )
                     else:
                         log.info("No action required")
                         
+                        # Send no-action notification
+                        notify_strategy_execution(
+                            strategy_name=strat.name,
+                            execution_time=datetime.now(),
+                            signal="NONE",
+                            bars_held=sig.indicators.get('bars_held'),
+                            indicators={
+                                **sig.indicators,
+                                'current_pos': pos,
+                                'reason': sig.reason
+                            }
+                        )
+                        
                 except Exception as e:
                     log.exception("Strategy '%s' failed in continuous mode", strat.name)
+                    
+                    # Send error notification
+                    notify_strategy_execution(
+                        strategy_name=strat.name,
+                        execution_time=datetime.now(),
+                        error=str(e),
+                        indicators={}
+                    )
                     continue
             
             # Wait for next check interval (unless shutdown requested)
@@ -227,13 +311,24 @@ def main() -> None:
 
     # ── Infrastructure ───────────────────────────────────────────────────
     db = DatabaseManager(DB_PATH)
-    ibkr_cfg = IBKRConfig()
-    broker = Broker(ibkr_cfg=ibkr_cfg, mkt_cfg=MarketDataConfig())
+    
     order_mgr: OrderManager  # declared here, initialised after connect
+    current_ibkr_cfg = None  # Track current IBKR config
 
     try:
+        # Connect with default config first
+        default_ibkr_cfg = IBKRConfig()
+        broker = Broker(ibkr_cfg=default_ibkr_cfg, mkt_cfg=MarketDataConfig())
         broker.connect()
-        order_mgr = OrderManager(broker.ib, ibkr_cfg.account)
+        order_mgr = OrderManager(broker.ib)
+        current_ibkr_cfg = default_ibkr_cfg  # Initialize with default config
+
+        # Initialize notification system
+        webhook_url = "https://defaulte9b7660d8611412a9331f148b35712.3d.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/5da69da964f24e96bdfb1016be5ad5f1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=xnRiOwVt5kKd-M-KdWY6owp77CRopnPlMvHqMCRih10"
+        init_notifications(webhook_url=webhook_url, enabled=True)
+        
+        # Send startup notification
+        notify_system("Trading framework started - strategies loaded", "INFO")
 
         strategies = build_strategies(
             broker, order_mgr, db, filter_name=args.strategy
@@ -257,30 +352,68 @@ def main() -> None:
             # Original single-run mode
             for strat in strategies:
                 try:
+                    # Get the account for this strategy (used only at order placement time)
+                    strategy_account = get_strategy_account(strat.name)
+                    log.info("Strategy %s will use account %s for order placement", strat.name, strategy_account)
+                    
+                    # Verify broker connection before strategy execution
+                    if not broker.ib.isConnected():
+                        log.warning("Broker disconnected, attempting to reconnect...")
+                        try:
+                            broker.connect()
+                            time.sleep(2)
+                        except Exception as e:
+                            log.error("Failed to reconnect broker: %s", str(e))
+                            continue
+                    
                     if args.dry_run:
                         log.info("[DRY RUN] Strategy: %s", strat.name)
                         # Partial execution: data + indicators + signal only
                         strat.db.upsert_strategy(strat.name, params=strat.params.params)
                         df = strat.fetch_data()
                         df = strat.compute_indicators(df)
-                        trade_ct = broker.qualify_contract(strat.spec)
-                        pos = broker.get_position_quantity(trade_ct.conId)
-                        sig = strat.generate_signal(df, pos)
-                        log.info("Signal FULL: %s", sig)
-                        log.info(
-                            "[DRY RUN] Signal: %s | Reason: %s",
-                            sig.signal_type, sig.reason,
-                        )
+                        try:
+                            trade_ct = broker.qualify_contract(strat.spec)
+                            pos = broker.get_position_quantity(trade_ct.conId)
+                            sig = strat.generate_signal(df, pos)
+                            log.info("DRY RUN - Signal: %s  reason=%s", sig.signal_type, sig.reason)
+                        except Exception as e:
+                            log.error("DRY RUN failed for strategy %s: %s", strat.name, str(e))
+                            notify_strategy_execution(
+                                strategy_name=strat.name,
+                                execution_time=datetime.now(),
+                                signal=sig.signal_type,
+                                indicators={
+                                    **sig.indicators,
+                                    'current_pos': pos,
+                                    'reason': sig.reason,
+                                    'dry_run': True
+                                },
+                                error=str(e)
+                            )
                     else:
                         strat.execute()
-                except Exception:
+                except Exception as e:
                     log.exception("Strategy '%s' failed", strat.name)
+                    
+                    # Send error notification
+                    notify_strategy_execution(
+                        strategy_name=strat.name,
+                        execution_time=datetime.now(),
+                        error=str(e),
+                        indicators={}
+                    )
 
     except ConnectionError:
         log.critical("Could not connect to IBKR - aborting")
         sys.exit(1)
+    except Exception as e:
+        log.exception("Unexpected error in main: %s", str(e))
     finally:
-        broker.disconnect()
+        try:
+            broker.disconnect()
+        except:
+            pass  # Broker might not be initialized
         db.close()
 
     log.info("ALL STRATEGIES COMPLETE")

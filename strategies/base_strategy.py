@@ -46,12 +46,14 @@ class BaseStrategy(ABC):
         broker: Broker,
         order_mgr: OrderManager,
         db: DatabaseManager,
+        account: str,
     ) -> None:
         self.params = params
         self.spec: ContractSpec = params.contract_spec
         self.broker = broker
         self.order_mgr = order_mgr
         self.db = db
+        self.account = account
         self.log = get_logger(f"strategy.{params.name}")
         self._df: Optional[pd.DataFrame] = None
 
@@ -145,7 +147,21 @@ class BaseStrategy(ABC):
             meta=signal.meta,
         )
 
-        # 7 — Execute orders
+        # 7 — Send notification
+        from utils.notifications import notify_strategy_execution
+        from datetime import datetime
+        notify_strategy_execution(
+            strategy_name=self.name,
+            execution_time=datetime.now(),
+            signal=signal.signal_type,
+            indicators={
+                **signal.indicators,
+                'current_pos': current_pos,
+                'reason': signal.reason
+            }
+        )
+
+        # 8 — Execute orders
         self._execute_signal(signal, trade_ct, current_pos)
 
         # 8 — Snapshot position
@@ -194,6 +210,7 @@ class BaseStrategy(ABC):
                 limit_price=limit_px,
                 tp_price=bracket_info["tp"],
                 sl_price=bracket_info["sl"],
+                account=self.account,
             )
             trade_id = self.db.open_trade(
                 strategy_name=self.name,
@@ -223,6 +240,7 @@ class BaseStrategy(ABC):
                 action="SELL",
                 quantity=qty,
                 limit_price=limit_px,
+                account=self.account,
             )
             # Close the open trade
             open_trade = self.db.get_open_trade(self.name)

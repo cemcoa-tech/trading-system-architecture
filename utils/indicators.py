@@ -296,3 +296,51 @@ class TreasuryStochHurstParams:
 
 # Instantiate default configuration
 TREASURY_STOCH_HURST_PARAMS = TreasuryStochHurstParams()
+
+def adx(high: pd.Series, low: pd.Series, close: pd.Series, 
+        length: int = 14) -> pd.Series:
+    """
+    Average Directional Index (ADX).
+    
+    Measures trend strength (not direction).
+    ADX > 25: strong trend
+    ADX < 20: weak trend / ranging
+    
+    Args:
+        high: High prices
+        low: Low prices
+        close: Close prices
+        length: ADX period
+        
+    Returns:
+        Series of ADX values
+    """
+    # Calculate directional movement
+    up_move = high.diff()
+    down_move = -low.diff()
+    
+    # +DM and -DM
+    plus_dm = np.where((up_move > down_move) & (up_move > 0), up_move, 0.0)
+    minus_dm = np.where((down_move > up_move) & (down_move > 0), down_move, 0.0)
+    
+    # True Range
+    prev_close = close.shift(1)
+    tr1 = high - low
+    tr2 = (high - prev_close).abs()
+    tr3 = (low - prev_close).abs()
+    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+    
+    # Smooth ATR
+    atr_smooth = tr.rolling(length).mean()
+    
+    # +DI and -DI
+    plus_di = 100 * pd.Series(plus_dm, index=high.index).rolling(length).mean() / atr_smooth
+    minus_di = 100 * pd.Series(minus_dm, index=high.index).rolling(length).mean() / atr_smooth
+    
+    # DX
+    dx = 100 * (plus_di - minus_di).abs() / (plus_di + minus_di)
+    
+    # ADX (smoothed DX)
+    adx_values = dx.rolling(length).mean()
+    
+    return adx_values
