@@ -809,3 +809,101 @@ class RBCombinedParams:
 
 # Instantiate default configuration
 RB_COMBINED_PARAMS = RBCombinedParams()
+
+# config/settings.py (ADD this section)
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  GOLD2 (GC) ATR-BASED STRATEGY
+# ─────────────────────────────────────────────────────────────────────────────
+@dataclass
+class Gold2Params:
+    """
+    Gold2 (GC) ATR-Based Entry/Exit Strategy
+    
+    Signal Calculation (ab):
+        ab = 1 if:
+            (Low[0] > Close[5] AND
+             Open[3] > Low[9] AND
+             Open[7] > Close[8] AND
+             Wednesday)
+            OR
+            Friday
+        
+        Otherwise ab = 2
+    
+    Entry:
+        - ab = 1 (signal day)
+        - Position sized by ATR: RiskDollars / (ATR * ATR_MULT * PointValue)
+        → Buy next bar at open (limit with offset)
+    
+    Exit:
+        - BarsSinceEntry = 2 AND ab = 2
+        → Sell next bar at open (limit with offset)
+    
+    Direction: Long-only
+    """
+    
+    # Strategy identification
+    name: str = "Gold2"
+    
+    # Contract specifications
+    symbol: str = "GC"
+    data_symbol: str = "GC"
+    contract_month: str = "202606"  # Update monthly
+    exchange: str = "COMEX"
+    currency: str = "USD"
+    tick_size: float = 0.1  # GC = $0.10 per troy ounce
+    point_value: float = 100.0  # 100 troy ounces per contract
+    
+    # Data fetching
+    duration: str = "60 D"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    atr_length: int = 14
+    atr_mult: float = 3.0  # Stop distance = ATR * 3
+    
+    # Risk management
+    risk_dollars: float = 20000.0  # Dollar risk per trade
+    
+    @property
+    def risk_usd(self) -> float:
+        """Alias for risk_dollars to match expected interface."""
+        return self.risk_dollars
+    
+    # Execution parameters
+    price_offset: float = 10.0  # Aggressive offset for fills
+    
+    # Not used in current logic (placeholder for future enhancements)
+    profit_target_dollars: float = 30000.0
+    stop_loss_dollars: float = 12000.0
+    
+    # Position sizing
+    max_position: int = 100  # Max contracts (actual size calculated by ATR)
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            data_symbol=self.data_symbol,
+            last_trade_date=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+            price_offset=self.price_offset,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "atr_length": self.atr_length,
+            "atr_mult": self.atr_mult,
+            "risk_dollars": self.risk_dollars,
+        }
+
+
+# Instantiate default configuration
+GOLD2_PARAMS = Gold2Params()

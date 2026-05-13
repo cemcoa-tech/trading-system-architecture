@@ -235,9 +235,36 @@ class Treasury30YEOMStrategy(BaseStrategy):
         if len(df) > 0 and not pd.isna(df.iloc[-1].get('close')):
             close_price = float(df.iloc[-1]['close'])
         
+        # Use database position state for decision making
+        in_position = self._position_state.get("in_position", False)
+        bars_held = self._position_state.get("bars_held", 0)
+        
+        # Log both positions for debugging
+        self.log.info(
+            "Position check - DB: in_position=%s, bars_held=%d | IBKR: current_pos=%d",
+            in_position, bars_held, current_pos
+        )
+        
+        # If there's a mismatch between DB and IBKR, use DB state but warn
+        if in_position and current_pos == 0:
+            self.log.warning(
+                "Position mismatch: DB shows position but IBKR shows 0. Using DB state."
+            )
+        elif not in_position and current_pos != 0:
+            self.log.warning(
+                "Position mismatch: IBKR shows position but DB shows none. Syncing to IBKR state."
+            )
+            # Sync to IBKR state if there's actually a position
+            if current_pos > 0:
+                in_position = True
+                self._position_state["in_position"] = True
+                self._position_state["entry_price"] = close_price
+                self._position_state["bars_held"] = 0
+                self._save_position_state()
+        
         # ── EXIT LOGIC (if in position) ──────────────────────────────────
         
-        if current_pos > 0 or self._position_state["in_position"]:
+        if in_position:
             state = self._position_state
             
             # Calculate actual bars held based on dates (handles gaps between runs)

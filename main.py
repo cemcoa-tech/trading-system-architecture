@@ -53,7 +53,7 @@ def get_strategy_account(strategy_name: str) -> str:
     """Determine which account to use for order placement based on strategy."""
     # Account mapping for order placement
     account_mapping = {
-        "U20859646": ["btc2", "zb_stoch", "BTC2_ValueLow_SMA", "Treasury_Stoch_Hurst"],
+        "U20859646": ["btc2", "zb_stoch", "BTC2_ValueLow_SMA", "Treasury_Stoch_Hurst","gold2"],
         "U22862141": ["mgc", "mnq", "mes", "btc", "zn", "zb", "rb"]
     }
     
@@ -87,6 +87,8 @@ from strategies.treasury_zn_eom import TreasuryZNEOMStrategy
 from strategies.treasury_30y_eom import Treasury30YEOMStrategy
 from strategies.treasury_stoch_hurst import TreasuryStochHurstStrategy
 from strategies.rb_combined import RBCombinedStrategy
+from strategies.gold2_atr import Gold2ATRStrategy
+
 
 def build_strategies(
     broker: Broker,
@@ -111,6 +113,7 @@ def build_strategies(
         TREASURY_STOCH_HURST_PARAMS,
         TREASURY_STOCH_HURST_PARAMS_ALT,
         RB_COMBINED_PARAMS,
+        GOLD2_PARAMS,
     )
     
     registry = {
@@ -126,6 +129,7 @@ def build_strategies(
         # Additional mappings for U20859646 account
         "BTC2_ValueLow_SMA": (BTC2_PARAMS_ALT, BTC2ValueLowSMAStrategy),
         "Treasury_Stoch_Hurst": (TREASURY_STOCH_HURST_PARAMS_ALT, TreasuryStochHurstStrategy),
+        "gold2": (GOLD2_PARAMS, Gold2ATRStrategy),
     }
 
     strategies: List[BaseStrategy] = []

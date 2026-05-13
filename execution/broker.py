@@ -183,18 +183,26 @@ class Broker:
         return fallback_close, "FALLBACK_CLOSE"
 
     # ── Account queries ──────────────────────────────────────────────────
-    def get_position_quantity(self, con_id: int) -> int:
-        """Current net position for a given conId under the configured account."""
+    def get_position_quantity(self, con_id: int, account: Optional[str] = None) -> int:
+        """Current net position for a given conId under the specified account.
+        
+        Args:
+            con_id: Contract ID to check position for
+            account: Account to filter positions (defaults to config account)
+        """
+        target_account = account or self._cfg.account
         for p in self._ib.positions():
-            # print("Position:", p)
-            # print("Contract:", p.contract, "conId=", p.contract.conId,"con_id=",con_id)
-            print("Account:", p.account,"==",self._cfg.account,"?",p.account == self._cfg.account)
-            print("Config account:", self._cfg.account)
-            if p.contract.conId == con_id and p.account == self._cfg.account:
+            if p.contract.conId == con_id and p.account == target_account:
                 return int(p.position)
         return 0
 
-    def get_all_positions(self) -> List[dict]:
+    def get_all_positions(self, account: Optional[str] = None) -> List[dict]:
+        """Get all positions for the specified account.
+        
+        Args:
+            account: Account to filter positions (defaults to config account)
+        """
+        target_account = account or self._cfg.account
         return [
             {
                 "symbol": p.contract.localSymbol,
@@ -204,5 +212,5 @@ class Broker:
                 "account": p.account,
             }
             for p in self._ib.positions()
-            if p.account == self._cfg.account
+            if p.account == target_account
         ]

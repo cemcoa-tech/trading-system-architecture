@@ -125,6 +125,8 @@ class MGCPullbackStrategy(BaseStrategy):
             Flat + uptrend + pullback  →  ENTRY_LONG
             Long + close > SMA32      →  EXIT_LONG
             Otherwise                  →  NONE
+            
+        Uses database position state for decision making, with IBKR API as verification.
         """
         last = df.iloc[-1]
         close = float(last["close"])
@@ -136,6 +138,32 @@ class MGCPullbackStrategy(BaseStrategy):
         pullback = rsi2 < self._rsi_thresh
         exit_up = close > sma32
 
+        # Use database position state for decision making
+        in_position = self._position_state.get("in_position", False)
+        bars_held = self._position_state.get("bars_held", 0)
+        
+        # Log both positions for debugging
+        self.log.info(
+            "Position check - DB: in_position=%s, bars_held=%d | IBKR: current_pos=%d",
+            in_position, bars_held, current_pos
+        )
+        
+        # If there's a mismatch between DB and IBKR, use DB state but warn
+        if in_position and current_pos == 0:
+            self.log.warning(
+                "Position mismatch: DB shows position but IBKR shows 0. Using DB state."
+            )
+        elif not in_position and current_pos != 0:
+            self.log.warning(
+                "Position mismatch: IBKR shows position but DB shows none. Syncing to IBKR state."
+            )
+            # Sync to IBKR state if there's actually a position
+            if current_pos > 0:
+                in_position = True
+                self._position_state["in_position"] = True
+                self._position_state["entry_price"] = close  # Use current price as fallback
+                self._save_position_state()
+
         indicators = {
             "SMA200": round(sma200, 2),
             "SMA32": round(sma32, 2),
@@ -143,16 +171,28 @@ class MGCPullbackStrategy(BaseStrategy):
             "uptrend": uptrend,
             "pullback": pullback,
             "exit_up": exit_up,
+            "bars_held": bars_held,
         }
 
         meta = {"date": str(last["date"])}
 
         self.log.info(
-            "States  uptrend=%s  pullback=%s  exit_up=%s  pos=%d",
-            uptrend, pullback, exit_up, current_pos,
+            "States  uptrend=%s  pullback=%s  exit_up=%s  in_position=%s",
+            uptrend, pullback, exit_up, in_position,
         )
 
-        if current_pos == 0 and uptrend and pullback:
+        # Exit logic (priority over entry)
+        if in_position and exit_up:
+            return Signal(
+                signal_type="EXIT_LONG",
+                reason="Close > SMA(32)",
+                close_price=close,
+                indicators=indicators,
+                meta=meta,
+            )
+
+        # Entry logic
+        if not in_position and uptrend and pullback:
             return Signal(
                 signal_type="ENTRY_LONG",
                 reason="UpTrend & Pullback (RSI2 < 30)",
@@ -163,6 +203,8 @@ class MGCPullbackStrategy(BaseStrategy):
 
         # No signal
         reason_parts = []
+        if in_position:
+            reason_parts.append("already in position")
         if not uptrend:
             reason_parts.append("no uptrend")
         if not pullback:
@@ -178,4 +220,29 @@ class MGCPullbackStrategy(BaseStrategy):
             meta=meta,
         )
 
-    
+    def _execute_signal(
+        self,
+        signal: Signal,
+        contract,
+        current_pos: int,
+    ) -> None:
+        """Override to add position state persistence."""
+        # Call parent implementation for order placement
+        super()._execute_signal(signal, contract, current_pos)
+        
+        # Handle position state persistence
+        if signal.signal_type == "ENTRY_LONG":
+            # Save position state after entry
+            self._position_state = {
+                "in_position": True,
+                "entry_bar_date": signal.meta.get("date"),
+                "entry_price": signal.close_price,
+                "bars_held": 0,
+            }
+            self._save_position_state()
+            
+        elif signal.signal_type == "EXIT_LONG":
+            # Delete position state after exit
+            self._delete_position_state()
+            self._reset_position_state()
+

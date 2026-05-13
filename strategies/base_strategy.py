@@ -126,7 +126,7 @@ class BaseStrategy(ABC):
         self._df = df
 
         # 4 — Current position
-        current_pos = self.broker.get_position_quantity(trade_ct.conId)
+        current_pos = self.broker.get_position_quantity(trade_ct.conId, account=self.account)
         self.log.info("Current position: %d", current_pos)
 
         # 5 — Generate signal
@@ -165,7 +165,7 @@ class BaseStrategy(ABC):
         self._execute_signal(signal, trade_ct, current_pos)
 
         # 8 — Snapshot position
-        new_pos = self.broker.get_position_quantity(trade_ct.conId)
+        new_pos = self.broker.get_position_quantity(trade_ct.conId, account=self.account)
         self.db.snapshot_position(
             strategy_name=self.name,
             symbol=self.spec.symbol,
