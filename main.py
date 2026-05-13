@@ -68,6 +68,14 @@ def get_strategy_account(strategy_name: str) -> str:
     return "U22862141"
 
 
+def get_ibkr_config(strategy_name: str):
+    """Return appropriate IBKR config based on strategy name."""
+    account = get_strategy_account(strategy_name)
+    if account == "U20859646":
+        return IBKRConfigAlt()
+    return IBKRConfig()
+
+
 # main.py (UPDATE the build_strategies function)
 
 from strategies.mgc_pullback import MGCPullbackStrategy
