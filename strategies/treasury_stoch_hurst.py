@@ -417,7 +417,8 @@ class TreasuryStochHurstStrategy(BaseStrategy):
             from ib_insync import LimitOrder
             order = LimitOrder("BUY", qty, limit_px)
             order.account = self.order_mgr._account
-            order.tif = "DAY"
+            order.tif = "GTC"
+            order.outsideRth = True
             
             trade = self.order_mgr._ib.placeOrder(contract, order)
             self.order_mgr._ib.waitOnUpdate()

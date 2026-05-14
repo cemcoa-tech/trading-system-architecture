@@ -68,6 +68,19 @@ class Gold2ATRStrategy(BaseStrategy):
 
     def _load_position_state(self) -> dict:
         """Load position state from database."""
+        # Try to load from position_state table first
+        pos_state = self.db.get_position_state(self.name, self.spec.symbol)
+        
+        if pos_state:
+            return {
+                "in_position": True,
+                "entry_bar_date": pos_state.get("entry_bar_date"),
+                "entry_price": pos_state.get("entry_price", 0.0),
+                "bars_held": pos_state.get("bars_held", 0),
+                "position_size": pos_state.get("position_size", 0),
+            }
+        
+        # Fallback to open_trade table for backward compatibility
         open_trade = self.db.get_open_trade(self.name)
         if not open_trade:
             return {
@@ -85,6 +98,21 @@ class Gold2ATRStrategy(BaseStrategy):
             "bars_held": 0,  # Will be incremented
             "position_size": open_trade.get("quantity", 0),
         }
+
+    def _save_position_state(self) -> None:
+        """Save position state to database."""
+        self.db.save_position_state(
+            strategy_name=self.name,
+            symbol=self.spec.symbol,
+            entry_bar_date=self._position_state["entry_bar_date"],
+            entry_price=self._position_state["entry_price"],
+            bars_held=self._position_state["bars_held"],
+            position_size=self._position_state.get("position_size", 0),
+        )
+
+    def _delete_position_state(self) -> None:
+        """Delete position state from database."""
+        self.db.delete_position_state(self.name, self.spec.symbol)
 
     def _reset_position_state(self) -> None:
         """Reset position state after exit."""
@@ -300,6 +328,9 @@ class Gold2ATRStrategy(BaseStrategy):
             indicators["bars_held"] = state["bars_held"]
             indicators["entry_price"] = round(state["entry_price"], 2)
             
+            # Save updated bars_held to database for persistence across runs
+            self._save_position_state()
+            
             # Exit: bars_held = 2 AND ab = 2
             if state["bars_held"] == 2 and ab == 2:
                 self.log.info(
@@ -420,7 +451,8 @@ class Gold2ATRStrategy(BaseStrategy):
             from ib_insync import LimitOrder
             order = LimitOrder("BUY", qty, limit_px)
             order.account = self.order_mgr._account
-            order.tif = "DAY"
+            order.tif = "GTC"
+            order.outsideRth = True
             
             trade = self.order_mgr._ib.placeOrder(contract, order)
             self.order_mgr._ib.waitOnUpdate()
@@ -445,6 +477,9 @@ class Gold2ATRStrategy(BaseStrategy):
                 trade_id=trade_id,
                 limit_price=limit_px,
             )
+            
+            # Persist position state to database
+            self._save_position_state()
         
         elif signal.signal_type == "EXIT_LONG":
             qty = abs(current_pos)
@@ -484,3 +519,7 @@ class Gold2ATRStrategy(BaseStrategy):
                 quantity=qty,
                 limit_price=fill_px,
             )
+            
+            # Delete position state from database
+            self._delete_position_state()
+            self._reset_position_state()

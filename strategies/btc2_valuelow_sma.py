@@ -433,25 +433,22 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
         
         if signal.signal_type == "ENTRY_LONG":
             qty = self.get_position_size(signal)
-            
-            # Update position state with actual entry price
-            self._position_state["entry_price"] = price
-            
-            # Place simple limit order (no bracket for this strategy)
             limit_px = self.order_mgr.round_tick(price, self.spec.tick_size)
             
+            self.log.info(
+                "Placing ENTRY order: BUY %d @ %.2f",
+                qty, limit_px,
+            )
+            
+            # Place limit order
             from ib_insync import LimitOrder
             order = LimitOrder("BUY", qty, limit_px)
             order.account = self.order_mgr._account
-            order.tif = "DAY"
+            order.tif = "GTC"
+            order.outsideRth = True
             
             trade = self.order_mgr._ib.placeOrder(contract, order)
             self.order_mgr._ib.waitOnUpdate()
-            
-            self.log.info(
-                "Entry order placed: BUY %d @ %.2f",
-                qty, limit_px,
-            )
             
             # Open trade in database
             trade_id = self.db.open_trade(

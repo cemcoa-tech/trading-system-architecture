@@ -164,13 +164,14 @@ class BaseStrategy(ABC):
         # 8 — Execute orders
         self._execute_signal(signal, trade_ct, current_pos)
 
-        # 8 — Snapshot position
-        new_pos = self.broker.get_position_quantity(trade_ct.conId, account=self.account)
-        self.db.snapshot_position(
-            strategy_name=self.name,
-            symbol=self.spec.symbol,
-            quantity=new_pos,
-        )
+        # 9 — Snapshot position only if there was a signal (ENTRY or EXIT)
+        if signal.signal_type != "NONE":
+            new_pos = self.broker.get_position_quantity(trade_ct.conId, account=self.account)
+            self.db.snapshot_position(
+                strategy_name=self.name,
+                symbol=self.spec.symbol,
+                quantity=new_pos,
+            )
 
         self.log.info("EXECUTION COMPLETE for %s", self.name)
 
