@@ -349,17 +349,13 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
         # ── ENTRY LOGIC (if flat) ────────────────────────────────────────
         
         # Entry: condition1 must have been true DELAY bars ago
-        # Signal evaluated on bar i-1 (prev), act on bar i (today)
-        # Check condition1 at bar i-1-DELAY
+        # TradeStation: condition1[delay] checks condition from 'delay' bars ago
+        # With delay=1, check condition1 from 1 bar ago (index -2)
         
-        delay_idx = len(df) - 1 - self._entry_delay  # Current bar minus delay
+        delay_idx = len(df) - 2 - self._entry_delay  # delay bars before current
         
         if delay_idx >= 0 and delay_idx < len(df):
             condition1_delayed = bool(df.iloc[delay_idx].get("condition1", False))
-            # print("delay_idx :--",delay_idx)
-            # print(df.tail(10))
-            # print("delay idx",df.iloc[delay_idx])
-            # print("Condition1 IS:--->",condition1_delayed)
             if current_pos == 0 and condition1_delayed:
                 # Safety check: ensure position_state agrees we're flat
                 if self._position_state["in_position"]:
