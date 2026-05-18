@@ -82,13 +82,17 @@ class BaseStrategy(ABC):
         """Return desired contract quantity for an entry signal."""
         # Hard-coded quantities based on contract symbol
         symbol_quantities = {
-            "MBT": 10,  # BTC Micro Futures
+            "MBT": 10,   # BTC Micro Futures
             "GC": 1,     # Gold Futures
             "ES": 1,     # S&P 500 Micro Futures
             "NQ": 1,     # NASDAQ 100 Micro Futures
             "MNQ": 1,    # NASDAQ 100 Micro Futures (alternative symbol)
             "MES": 1,    # S&P 500 Micro Futures (alternative symbol)
             "MGC": 1,    # Gold Micro Futures
+            "ZC": 1,     # Corn Futures
+            "ZN": 5,     # 10-Year Treasury Note (3x Treasury strategies)
+            "ZB": 5,     # 30-Year Treasury Bond
+            "MWN": 5,    # Micro 30-Year Treasury (Stoch Hurst execution)
         }
         
         return symbol_quantities.get(self.spec.symbol, 1)

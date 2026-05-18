@@ -88,6 +88,7 @@ from strategies.treasury_30y_eom import Treasury30YEOMStrategy
 from strategies.treasury_stoch_hurst import TreasuryStochHurstStrategy
 from strategies.rb_combined import RBCombinedStrategy
 from strategies.gold2_atr import Gold2ATRStrategy
+from strategies.corn_volatility import CornVolatilityStrategy
 
 
 def build_strategies(
@@ -114,6 +115,7 @@ def build_strategies(
         TREASURY_STOCH_HURST_PARAMS_ALT,
         RB_COMBINED_PARAMS,
         GOLD2_PARAMS,
+        CORN_VOLATILITY_PARAMS,
     )
     
     registry = {
@@ -130,6 +132,7 @@ def build_strategies(
         "BTC2_ValueLow_SMA": (BTC2_PARAMS_ALT, BTC2ValueLowSMAStrategy),
         "Treasury_Stoch_Hurst": (TREASURY_STOCH_HURST_PARAMS_ALT, TreasuryStochHurstStrategy),
         "gold2": (GOLD2_PARAMS, Gold2ATRStrategy),
+        "corn": (CORN_VOLATILITY_PARAMS, CornVolatilityStrategy)
     }
 
     strategies: List[BaseStrategy] = []

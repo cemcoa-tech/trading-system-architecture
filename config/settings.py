@@ -23,9 +23,9 @@ LOG_DIR = BASE_DIR / "logs"
 class IBKRConfig:
     """Interactive Brokers gateway / TWS connection parameters."""
     host: str = "127.0.0.1"
-    port: int = 4001          # 4002 = IB Gateway paper, 7497 = TWS paper
+    port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8935
-    account: str = "U22862141"#DUM165609"#U22862141
+    account: str = "DUM165609"#DUM165609"#U22862141
     connect_timeout: float = 15.0
     max_retries: int = 3
     retry_delay: float = 5.0
@@ -35,9 +35,9 @@ class IBKRConfig:
 class IBKRConfigAlt:
     """Alternative IBKR configuration for U20859646 account."""
     host: str = "127.0.0.1"
-    port: int = 4001          # 4002 = IB Gateway paper, 7497 = TWS paper
+    port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8936  # Different client ID to avoid conflicts
-    account: str = "U20859646"
+    account: str = "DUM165610"
     connect_timeout: float = 15.0
     max_retries: int = 3
     retry_delay: float = 5.0
@@ -906,3 +906,93 @@ class Gold2Params:
 
 # Instantiate default configuration
 GOLD2_PARAMS = Gold2Params()
+
+@dataclass
+class CornVolatilityParams:
+    """
+    Corn (ZC) Volatility Expansion Strategy
+    
+    Entry:
+        Long: BarRange > VolThreshold AND Close > Close[TrendBars]
+        Short: BarRange > VolThreshold AND Close < Close[TrendBars]
+        
+        Where VolThreshold = VolMult * StdDev(BarRange, LookbackVol) + Average(BarRange, LookbackVol)
+    
+    Position Sizing:
+        PosSize = StopLimit / (ATR * ATRMult * BigPointValue)
+    
+    Exits:
+        - Profit Target: $2500
+        - Stop Loss: $10000
+        - Time Exit: 80 bars (forced exit)
+    
+    Direction: Long and Short
+    """
+    
+    # Strategy identification
+    name: str = "Corn_Volatility"
+    
+    # Contract specifications
+    symbol: str = "ZC"
+    data_symbol: str = "ZC"
+    contract_month: str = "202607"  # Update as needed
+    exchange: str = "CBOT"
+    currency: str = "USD"
+    tick_size: float = 0.25  # ZC = 1/4 cent per bushel
+    point_value: float = 50.0  # $50 per 1 cent move (5000 bushels * $0.01)
+    
+    # Data fetching
+    duration: str = "120 D"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Volatility parameters
+    vol_mult: float = 2.0  # Volatility threshold multiplier
+    lookback_vol: int = 25  # Lookback period for volatility calculation
+    trend_bars: int = 20  # Trend comparison period
+    
+    # Position sizing (ATR-based)
+    atr_length: int = 14
+    atr_mult: float = 2.0  # ATR multiplier for stop distance
+    stop_limit_dollars: float = 10000.0  # Dollar stop loss
+    
+    # Exit parameters
+    profit_target_dollars: float = 2500.0
+    forced_exit_bars: int = 80  # Time exit after N bars
+    
+    # Execution parameters
+    price_offset: float = 0.00  # Market orders (no offset)
+    
+    # Risk management
+    risk_usd: float = 10000.0  # Matches stop_limit_dollars
+    max_position: int = 100  # Max contracts (actual size calculated by ATR)
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            data_symbol=self.data_symbol,
+            last_trade_date=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "vol_mult": self.vol_mult,
+            "lookback_vol": self.lookback_vol,
+            "trend_bars": self.trend_bars,
+            "atr_length": self.atr_length,
+            "atr_mult": self.atr_mult,
+            "stop_limit_dollars": self.stop_limit_dollars,
+            "profit_target_dollars": self.profit_target_dollars,
+            "forced_exit_bars": self.forced_exit_bars,
+        }
+
+
+# Instantiate default configuration
+CORN_VOLATILITY_PARAMS = CornVolatilityParams()
