@@ -507,6 +507,7 @@ class MESCondition1Strategy(BaseStrategy):
                 action="SELL",
                 quantity=qty,
                 limit_price=exit_price,
+                account=self.account,
             )
             
             # Close the open trade

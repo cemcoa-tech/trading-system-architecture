@@ -101,13 +101,14 @@ class Gold2ATRStrategy(BaseStrategy):
 
     def _save_position_state(self) -> None:
         """Save position state to database."""
-        self.db.save_position_state(
+        import json
+        self.db.upsert_position_state(
             strategy_name=self.name,
             symbol=self.spec.symbol,
             entry_bar_date=self._position_state["entry_bar_date"],
             entry_price=self._position_state["entry_price"],
             bars_held=self._position_state["bars_held"],
-            position_size=self._position_state.get("position_size", 0),
+            state_json=json.dumps({"position_size": self._position_state.get("position_size", 0)}),
         )
 
     def _delete_position_state(self) -> None:
@@ -216,41 +217,15 @@ class Gold2ATRStrategy(BaseStrategy):
 
     def _compute_position_size(self, df: pd.DataFrame) -> pd.Series:
         """
-        Calculate position size based on ATR and risk.
+        ATR-based position sizing (currently disabled - using fixed qty from base class).
         
-        PositionSize = RiskDollars / (StopDistance * PointValue)
-        StopDistance = ATR * ATR_MULT
-        
-        Returns integer position size (contracts).
+        # PositionSize = RiskDollars / (StopDistance * PointValue)
+        # StopDistance = ATR * ATR_MULT
+        # raw_size = self._risk_dollars / (ATR * self._atr_mult * self.spec.point_value)
+        # position_size = min(int(raw_size), self.params.max_position)
         """
-        position_sizes = pd.Series(0, index=df.index)
-        
-        for i in range(len(df)):
-            atr_val = df["atr"].iloc[i]
-            
-            if pd.isna(atr_val) or atr_val <= 0:
-                continue
-            
-            stop_distance = self._atr_mult * atr_val
-            
-            if stop_distance <= 0:
-                continue
-            
-            # Calculate raw size
-            raw_size = self._risk_dollars / (stop_distance * self.spec.point_value)
-            
-            # TradeStation IntPortion equivalent
-            position_size = int(raw_size)
-            
-            # Cap at max position
-            position_size = min(position_size, self.params.max_position)
-            
-            # Ensure non-negative
-            position_size = max(0, position_size)
-            
-            position_sizes.iloc[i] = position_size
-        
-        return position_sizes
+        # Fixed at 1 contract - delegated to base class symbol_quantities map (GC=1)
+        return pd.Series(1, index=df.index)
 
     def generate_signal(self, df: pd.DataFrame, current_pos: int) -> Signal:
         """
@@ -361,7 +336,7 @@ class Gold2ATRStrategy(BaseStrategy):
         
         # ── ENTRY LOGIC (if flat) ────────────────────────────────────────
         
-        if not in_position and ab == 1 and position_size > 0:
+        if not in_position and ab == 1:
             # Initialize position state
             self._position_state = {
                 "in_position": True,
@@ -370,6 +345,8 @@ class Gold2ATRStrategy(BaseStrategy):
                 "bars_held": 0,
                 "position_size": position_size,
             }
+            # Persist immediately so reruns don't fire duplicate entries
+            self._save_position_state()
             
             self.log.info(
                 "ENTRY: ab=1, ATR-sized position=%d (ATR=%.4f, risk=$%.0f)",
@@ -405,8 +382,9 @@ class Gold2ATRStrategy(BaseStrategy):
         )
 
     def get_position_size(self, signal: Signal) -> int:
-        """Get ATR-calculated position size from signal."""
-        return signal.indicators.get("position_size", 1)
+        """Fixed position size via base class symbol_quantities map (GC=1)."""
+        # ATR-based sizing disabled: return signal.indicators.get("position_size", 1)
+        return super().get_position_size(signal)
 
     def _execute_signal(self, signal: Signal, contract, current_pos: int) -> None:
         """
@@ -450,7 +428,7 @@ class Gold2ATRStrategy(BaseStrategy):
             # Place limit order
             from ib_insync import LimitOrder
             order = LimitOrder("BUY", qty, limit_px)
-            order.account = self.order_mgr._account
+            order.account = self.account
             order.tif = "GTC"
             order.outsideRth = True
             
@@ -502,6 +480,7 @@ class Gold2ATRStrategy(BaseStrategy):
                 action="SELL",
                 quantity=qty,
                 limit_price=limit_px,
+                account=self.account,
                 cancel_bracket=False,  # No brackets in this strategy
             )
             

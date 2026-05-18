@@ -431,7 +431,7 @@ class Treasury30YEOMStrategy(BaseStrategy):
             # Place limit order
             from ib_insync import LimitOrder
             order = LimitOrder("BUY", qty, limit_px)
-            order.account = self.order_mgr._account
+            order.account = self.account
             order.tif = "GTC"
             order.outsideRth = True
             
@@ -484,6 +484,7 @@ class Treasury30YEOMStrategy(BaseStrategy):
                 action="SELL",
                 quantity=qty,
                 limit_price=limit_px,
+                account=self.account,
             )
             
             # Close open trade
