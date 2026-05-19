@@ -11,8 +11,7 @@ Entry:
 
 Exits:
     1) Signal Exit: barssinceentry < max_time-1
-       AND ValueLowest(low, 5)[0] > ValueLowest(low, 5)[5]
-       (rising 5-bar low floor → momentum returning)
+       AND ValueLow[0] > ValueLow[5]  (normalized low rising)
        → Sell next bar at open
     
     2) Time Exit: barssinceentry >= max_time-1
@@ -30,7 +29,7 @@ from database.manager import DatabaseManager
 from execution.broker import Broker
 from execution.order_manager import OrderManager
 from strategies.base_strategy import BaseStrategy, Signal
-from utils.indicators import wilder_rsi, value_lowest
+from utils.indicators import wilder_rsi, value_low
 
 
 class BTCRSIMeanRevStrategy(BaseStrategy):
@@ -131,12 +130,13 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
         return self.broker.fetch_historical_bars(data_ct)
 
     def compute_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Add RSI(2) and ValueLowest(low, 5)."""
+        """Add RSI(2) and ValueLow for exit logic."""
         # Wilder RSI(2)
         df["rsi2"] = wilder_rsi(df["close"], self._rsi_length)
         
-        # ValueLowest(low, window)
-        df["vl5"] = value_lowest(df["low"], self._value_low_window)
+        # TradeStation ValueLow(high, low, length) - normalized low position
+        # Used for signal exit: compares vl5 from yesterday vs 5 days ago
+        df["vl5"] = value_low(df["high"], df["low"], self._value_low_window)
         
         # Trending detection components
         df["is_trending"] = self._compute_trending(df)
@@ -193,13 +193,13 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
         
         Exit (while in position):
             1) Signal Exit: bars_held < max_time-1
-               AND vl5[i-1] > vl5[i-6]  (rising low floor)
+               AND ValueLow[i-1] > ValueLow[i-6]  (rising normalized low)
                → EXIT_LONG at bar i open
             
             2) Time Exit: bars_held >= max_time-1
                → EXIT_LONG at bar i open
         """
-        if len(df) < 10:
+        if len(df) < max(self._max_time, self._value_low_window + 2):
             return Signal(
                 signal_type="NONE",
                 reason="Insufficient data",
@@ -227,32 +227,18 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
         
         meta = {"date": str(last["date"])}
         
-        # Use database position state for decision making
+        # Use database position state for decision making (ignore IBKR for testing)
         in_position = self._position_state.get("in_position", False)
         bars_held = self._position_state.get("bars_held", 0)
         
-        # Log both positions for debugging
+        # Log DB position only (ignoring IBKR for testing)
         self.log.info(
-            "Position check - DB: in_position=%s, bars_held=%d | IBKR: current_pos=%d",
+            "Position check - DB: in_position=%s, bars_held=%d (IBKR: %d - ignored for testing)",
             in_position, bars_held, current_pos
         )
         
-        # If there's a mismatch between DB and IBKR, use DB state but warn
-        if in_position and current_pos == 0:
-            self.log.warning(
-                "Position mismatch: DB shows position but IBKR shows 0. Using DB state."
-            )
-        elif not in_position and current_pos != 0:
-            self.log.warning(
-                "Position mismatch: IBKR shows position but DB shows none. Syncing to IBKR state."
-            )
-            # Sync to IBKR state if there's actually a position
-            if current_pos > 0:
-                in_position = True
-                self._position_state["in_position"] = True
-                self._position_state["entry_price"] = close
-                self._position_state["bars_held"] = 0
-                self._save_position_state()
+        # NOTE: IBKR position check disabled - using DB state only
+        # This allows testing entries/exits regardless of IBKR reported position
         
         # ── EXIT LOGIC (if in position) ──────────────────────────────────
         
@@ -282,36 +268,39 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
                     meta={**meta, "exit_type": "TimeX"},
                 )
             
-            # Priority 1: Signal Exit (rising low floor)
-            # Check: vl5[i-1] > vl5[i-6]
-            if bars_at_prev < (self._max_time - 1):
-                vl5_prev = prev.get("vl5")
-                vl5_6ago = df.iloc[-7].get("vl5") if len(df) >= 7 else None
-                
-                if vl5_prev is not None and vl5_6ago is not None and not np.isnan(vl5_prev) and not np.isnan(vl5_6ago):
-                    if vl5_prev > vl5_6ago:
-                        self.log.info(
-                            "EXIT: Signal exit (VL5 rising: %.2f > %.2f, bars=%d)",
-                            vl5_prev, vl5_6ago, state["bars_held"]
-                        )
-                        self._reset_position_state()
-                        self._delete_position_state()
-                        return Signal(
-                            signal_type="EXIT_LONG",
-                            reason=f"Signal exit: rising low floor (bars={state['bars_held']})",
-                            close_price=open_price,
-                            indicators={
-                                **indicators,
-                                "vl5_prev": round(vl5_prev, 2),
-                                "vl5_6ago": round(vl5_6ago, 2),
-                            },
-                            meta={**meta, "exit_type": "SignalX"},
-                        )
+            # Priority 1: Signal Exit (rising normalized low)
+            # Compare yesterday's ValueLow with ValueLow from 5 days ago
+            # vl5_prev = yesterday's normalized low (e.g., -6.91)
+            # vl5_6ago = normalized low 5 days before yesterday (e.g., -1.43)
+            # Exit when: vl5_prev > vl5_6ago (less negative = rising)
+            vl5_prev = df.iloc[-2].get("vl5")  # Yesterday's ValueLow
+            vl5_6ago = df.iloc[-7].get("vl5") if len(df) >= 7 else None  # ValueLow 5 days before yesterday
+            
+            # Store both values in indicators for DB logging
+            indicators["vl5_prev"] = round(vl5_prev, 2) if vl5_prev is not None and not np.isnan(vl5_prev) else None
+            indicators["vl5_6ago"] = round(vl5_6ago, 2) if vl5_6ago is not None and not np.isnan(vl5_6ago) else None
+            
+            if vl5_prev is not None and vl5_6ago is not None and not np.isnan(vl5_prev) and not np.isnan(vl5_6ago):
+                if vl5_prev > vl5_6ago:
+                    self.log.info(
+                        "EXIT: Signal exit (ValueLow rising: %.2f > %.2f, bars=%d)",
+                        vl5_prev, vl5_6ago, state["bars_held"]
+                    )
+                    self._reset_position_state()
+                    self._delete_position_state()
+                    return Signal(
+                        signal_type="EXIT_LONG",
+                        reason=f"Signal exit: rising ValueLow (bars={state['bars_held']})",
+                        close_price=open_price,
+                        indicators=indicators,
+                        meta={**meta, "exit_type": "SignalX"},
+                    )
             
             # Continue holding
             self.log.info(
-                "HOLD: bars=%d (max_time=%d)",
+                "HOLD: bars=%d (max_time=%d) | ValueLow: prev=%s, 6ago=%s",
                 state["bars_held"], self._max_time,
+                indicators["vl5_prev"], indicators["vl5_6ago"]
             )
             return Signal(
                 signal_type="NONE",
@@ -341,10 +330,10 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
         rsi_in_range = self._rsi_low <= rsi_prev2 <= self._rsi_high
         entry_condition = (not is_trending_prev) and rsi_in_range
         
-        if current_pos == 0 and entry_condition:
+        if not in_position and entry_condition:
             # Safety check: ensure position_state agrees we're flat
             if self._position_state["in_position"]:
-                self.log.warning("Skipping entry: position_state shows in_position=True despite current_pos=0")
+                self.log.warning("Skipping entry: position_state shows in_position=True")
                 return Signal(
                     signal_type="NONE", 
                     reason="Position state conflict",
@@ -458,7 +447,7 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
             )
         
         elif signal.signal_type == "EXIT_LONG":
-            qty = abs(current_pos)
+            qty = self.get_position_size(signal)
             limit_px = self.order_mgr.round_tick(price, self.spec.tick_size)
             
             # Place exit order (no bracket to cancel for this strategy)

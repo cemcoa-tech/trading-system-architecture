@@ -102,6 +102,44 @@ def value_lowest(series: pd.Series, window: int) -> pd.Series:
     return series.rolling(window=window, min_periods=window).min()
 
 
+def value_low(high: pd.Series, low: pd.Series, length: int) -> pd.Series:
+    """
+    TradeStation ValueLow indicator.
+    
+    Calculates normalized position of Low relative to average mid-price,
+    scaled by average range volatility.
+    
+    TradeStation formula:
+        relative = Average((H + L) / 2, length)
+        volUnit = Average(Range, length)
+        ValueLow = (Low - relative) / (volUnit * 1/length)  if volUnit * 1/length <> 0
+    
+    Args:
+        high: High prices
+        low: Low prices  
+        length: Lookback period
+        
+    Returns:
+        Series of ValueLow values (normalized measure)
+    """
+    # Average mid-price (relative)
+    mid_price = (high + low) / 2
+    relative = mid_price.rolling(window=length, min_periods=length).mean()
+    
+    # Average range (volatility unit)
+    price_range = high - low
+    vol_unit = price_range.rolling(window=length, min_periods=length).mean()
+    
+    # Denominator: volUnit * 1/length
+    denominator = vol_unit / length
+    
+    # ValueLow = (Low - relative) / (volUnit * 1/length)
+    # Avoid division by zero
+    value_low = (low - relative) / denominator.replace(0, np.nan)
+    
+    return value_low
+
+
 def value_highest(series: pd.Series, window: int) -> pd.Series:
     """
     Rolling maximum (ValueHighest in TradeStation).

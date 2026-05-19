@@ -24,7 +24,7 @@ class IBKRConfig:
     """Interactive Brokers gateway / TWS connection parameters."""
     host: str = "127.0.0.1"
     port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
-    client_id: int = 8935
+    client_id: int = 8938
     account: str = "DUM165609"#DUM165609"#U22862141
     connect_timeout: float = 15.0
     max_retries: int = 3
@@ -37,7 +37,7 @@ class IBKRConfigAlt:
     host: str = "127.0.0.1"
     port: int = 4002          # 4002 = IB Gateway paper, 7497 = TWS paper
     client_id: int = 8936  # Different client ID to avoid conflicts
-    account: str = "DUM165610"
+    account: str = "DUM165609"
     connect_timeout: float = 15.0
     max_retries: int = 3
     retry_delay: float = 5.0

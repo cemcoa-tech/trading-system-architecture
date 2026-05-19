@@ -256,28 +256,14 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
         in_position = self._position_state.get("in_position", False)
         bars_held = self._position_state.get("bars_held", 0)
         
-        # Log both positions for debugging
+        # Log DB position only (ignoring IBKR for testing)
         self.log.info(
-            "Position check - DB: in_position=%s, bars_held=%d | IBKR: current_pos=%d",
+            "Position check - DB: in_position=%s, bars_held=%d (IBKR: %d - ignored for testing)",
             in_position, bars_held, current_pos
         )
         
-        # If there's a mismatch between DB and IBKR, use DB state but warn
-        if in_position and current_pos == 0:
-            self.log.warning(
-                "Position mismatch: DB shows position but IBKR shows 0. Using DB state."
-            )
-        elif not in_position and current_pos != 0:
-            self.log.warning(
-                "Position mismatch: IBKR shows position but DB shows none. Syncing to IBKR state."
-            )
-            # Sync to IBKR state if there's actually a position
-            if current_pos > 0:
-                in_position = True
-                self._position_state["in_position"] = True
-                self._position_state["entry_price"] = close
-                self._position_state["bars_held"] = 0
-                self._save_position_state()
+        # NOTE: IBKR position check disabled - using DB state only
+        # This allows testing entries/exits regardless of IBKR reported position
         
         # ── EXIT LOGIC (if in position) ──────────────────────────────────
         
@@ -334,6 +320,10 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
                         )
             
             # Continue holding
+            # Calculate SMA values for debugging even when not exiting
+            sma5_current = last.get("sma5")
+            sma5_2 = df.iloc[-3].get("sma5") if len(df) >= 3 else None
+            
             self.log.info(
                 "HOLD: bars=%d (max_time=%d)",
                 state["bars_held"], self._max_time,
@@ -342,7 +332,11 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
                 signal_type="NONE",
                 reason=f"Holding position (bars={state['bars_held']})",
                 close_price=close,
-                indicators=indicators,
+                indicators={
+                    **indicators,
+                    "sma5_current": round(sma5_current, 2) if sma5_current is not None and not np.isnan(sma5_current) else None,
+                    "sma5_2": round(sma5_2, 2) if sma5_2 is not None and not np.isnan(sma5_2) else None,
+                },
                 meta=meta,
             )
         
@@ -356,10 +350,10 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
         
         if delay_idx >= 0 and delay_idx < len(df):
             condition1_delayed = bool(df.iloc[delay_idx].get("condition1", False))
-            if current_pos == 0 and condition1_delayed:
+            if not in_position and condition1_delayed:
                 # Safety check: ensure position_state agrees we're flat
                 if self._position_state["in_position"]:
-                    self.log.warning("Skipping entry: position_state shows in_position=True despite current_pos=0")
+                    self.log.warning("Skipping entry: position_state shows in_position=True")
                     return Signal(
                         signal_type="NONE", 
                         reason="Position state conflict",
