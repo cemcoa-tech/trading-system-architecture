@@ -283,7 +283,7 @@ class CornVolatilityStrategy(BaseStrategy):
         
         last = df.iloc[-1]
         close = float(last["close"])
-        signal = 1 #int(last.get("signal", 0))
+        signal = int(last.get("signal", 0))
         position_size = int(last.get("position_size", 0))
         atr_val = float(last.get("atr", 0))
         bar_range = float(last.get("bar_range", 0))

@@ -29,6 +29,7 @@ Direction: Long-only
 
 import pandas as pd
 import numpy as np
+from datetime import datetime, timezone
 from typing import Optional
 
 from config.settings import StrategyParams
@@ -265,7 +266,20 @@ class Gold2ATRStrategy(BaseStrategy):
             "day_of_week": int(last.get("day_of_week", -1)),
         }
         
-        meta = {"date": str(last["date"])}
+        # Normalize UTC date to local timezone for consistent storage
+        ibkr_date_str = str(last["date"])
+        try:
+            # IBKR format_date=2 returns "YYYYMMDD HH:mm:ss" in UTC
+            if len(ibkr_date_str) >= 14:
+                dt_utc = datetime.strptime(ibkr_date_str[:14], "%Y%m%d %H:%M:%S").replace(tzinfo=timezone.utc)
+                dt_local = dt_utc.astimezone()  # Convert to local timezone
+                local_date_str = dt_local.strftime("%Y-%m-%d")
+            else:
+                local_date_str = ibkr_date_str
+        except (ValueError, TypeError):
+            local_date_str = ibkr_date_str
+        
+        meta = {"date": local_date_str}
         
         # Use database position state for decision making
         in_position = self._position_state.get("in_position", False)
