@@ -308,16 +308,16 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
                 )
             
             # Priority 2: Signal Exit (SMA turning up)
-            # Check: SMA(5)[0] > SMA(5)[2]  (at previous bar)
+            # Check: SMA(5)[current] > SMA(5)[2]  (current bar vs 2 bars ago)
             if bars_at_prev < (self._max_time - 1):
-                sma5_0 = prev.get("sma5")
-                sma5_2 = df.iloc[-4].get("sma5") if len(df) >= 4 else None  # [i-1-2] = i-3
+                sma5_current = last.get("sma5")  # Current bar SMA
+                sma5_2 = df.iloc[-3].get("sma5") if len(df) >= 3 else None  # 2 bars ago
                 
-                if sma5_0 is not None and sma5_2 is not None and not np.isnan(sma5_0) and not np.isnan(sma5_2):
-                    if sma5_0 > sma5_2:
+                if sma5_current is not None and sma5_2 is not None and not np.isnan(sma5_current) and not np.isnan(sma5_2):
+                    if sma5_current > sma5_2:
                         self.log.info(
                             "EXIT: Signal exit (SMA turning up: %.2f > %.2f, bars=%d)",
-                            sma5_0, sma5_2, state["bars_held"]
+                            sma5_current, sma5_2, state["bars_held"]
                         )
                         self._reset_position_state()
                         self._delete_position_state()
@@ -327,7 +327,7 @@ class BTC2ValueLowSMAStrategy(BaseStrategy):
                             close_price=open_price,
                             indicators={
                                 **indicators,
-                                "sma5_0": round(sma5_0, 2),
+                                "sma5_current": round(sma5_current, 2),
                                 "sma5_2": round(sma5_2, 2),
                             },
                             meta={**meta, "exit_type": "SigX"},
