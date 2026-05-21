@@ -216,10 +216,12 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
         open_price = float(last["open"])
         
         # Build indicator dict
+        vl5_6ago = df.iloc[-7].get("vl5") if len(df) >= 7 else None
         indicators = {
             "rsi2_prev": round(float(prev.get("rsi2", np.nan)), 2),
             "rsi2_prev2": round(float(prev2.get("rsi2", np.nan)), 2),
             "vl5_prev": round(float(prev.get("vl5", np.nan)), 2),
+            "vl5_6ago": round(float(vl5_6ago), 2) if vl5_6ago is not None and not np.isnan(vl5_6ago) else None,
             "is_trending_prev": bool(prev.get("is_trending", False)),
             "open": round(open_price, 2),
             "close": round(close, 2),
@@ -269,22 +271,23 @@ class BTCRSIMeanRevStrategy(BaseStrategy):
                 )
             
             # Priority 1: Signal Exit (rising normalized low)
-            # Compare yesterday's ValueLow with ValueLow from 5 days ago
+            # Compare yesterday's ValueLow with ValueLow from 6 days ago
             # vl5_prev = yesterday's normalized low (e.g., -6.91)
-            # vl5_6ago = normalized low 5 days before yesterday (e.g., -1.43)
+            # vl5_6ago = normalized low 6 days ago (e.g., -1.43)
             # Exit when: vl5_prev > vl5_6ago (less negative = rising)
-            vl5_prev = df.iloc[-2].get("vl5")  # Yesterday's ValueLow
-            vl5_6ago = df.iloc[-7].get("vl5") if len(df) >= 7 else None  # ValueLow 5 days before yesterday
-            
-            # Store both values in indicators for DB logging
+            # Note: df.iloc[-1] is the most recent completed bar (yesterday's close)
+            # For 6 days ago: iloc[-1] - 6 = iloc[-7]
+            vl5_prev = df.iloc[-1].get("vl5")  # Yesterday's ValueLow (most recent bar)
+            # vl5_6ago already calculated in initial indicators dict as iloc[-7]
+
+            # Update vl5_prev in indicators (use most recent bar, not prev)
             indicators["vl5_prev"] = round(vl5_prev, 2) if vl5_prev is not None and not np.isnan(vl5_prev) else None
-            indicators["vl5_6ago"] = round(vl5_6ago, 2) if vl5_6ago is not None and not np.isnan(vl5_6ago) else None
-            
-            if vl5_prev is not None and vl5_6ago is not None and not np.isnan(vl5_prev) and not np.isnan(vl5_6ago):
-                if vl5_prev > vl5_6ago:
+
+            if vl5_prev is not None and indicators["vl5_6ago"] is not None and not np.isnan(vl5_prev) and not np.isnan(indicators["vl5_6ago"]):
+                if vl5_prev > indicators["vl5_6ago"]:
                     self.log.info(
                         "EXIT: Signal exit (ValueLow rising: %.2f > %.2f, bars=%d)",
-                        vl5_prev, vl5_6ago, state["bars_held"]
+                        vl5_prev, indicators["vl5_6ago"], state["bars_held"]
                     )
                     self._reset_position_state()
                     self._delete_position_state()
