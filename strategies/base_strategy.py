@@ -89,7 +89,7 @@ class BaseStrategy(ABC):
             "MNQ": 1,    # NASDAQ 100 Micro Futures (alternative symbol)
             "MES": 1,    # S&P 500 Micro Futures (alternative symbol)
             "MGC": 1,    # Gold Micro Futures
-            "ZC": 1,     # Corn Futures
+            "ZC": 3,     # Corn Futures
             "ZN": 5,     # 10-Year Treasury Note (3x Treasury strategies)
             "ZB": 5,     # 30-Year Treasury Bond
             "MWN": 5,    # Micro 30-Year Treasury (Stoch Hurst execution)

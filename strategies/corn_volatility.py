@@ -186,40 +186,40 @@ class CornVolatilityStrategy(BaseStrategy):
     def _compute_signal(self, df: pd.DataFrame) -> pd.Series:
         """
         Compute entry signal.
-        
+
         Long (1):
             - BarRange > VolThreshold
             - Close > Close[TrendBars]
-        
+
         Short (-1):
             - BarRange > VolThreshold
             - Close < Close[TrendBars]
-        
+
         None (0): Otherwise
         """
         signal = pd.Series(0, index=df.index)
-        
+
         for i in range(self._trend_bars + self._lookback_vol, len(df)):
             try:
                 bar_range = df["bar_range"].iloc[i]
                 vol_threshold = df["vol_threshold"].iloc[i]
                 close_curr = df["close"].iloc[i]
                 close_trend = df["trend_close"].iloc[i]
-                
+
                 if any(pd.isna(v) for v in [bar_range, vol_threshold, close_curr, close_trend]):
                     continue
-                
+
                 # Volatility expansion condition
                 vol_trigger = bar_range > vol_threshold
-                
+
                 if vol_trigger and close_curr > close_trend:
                     signal.iloc[i] = 1  # Long
                 elif vol_trigger and close_curr < close_trend:
                     signal.iloc[i] = -1  # Short
-                
+
             except (IndexError, KeyError):
                 continue
-        
+
         return signal
 
     def _compute_position_size(self, df: pd.DataFrame) -> pd.Series:

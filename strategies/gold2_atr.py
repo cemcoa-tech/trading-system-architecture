@@ -8,11 +8,10 @@ Signal (ab):
     ab = 1 if:
         (Low[0] > Close[5] AND
          Open[3] > Low[9] AND
-         Open[7] > Close[8] AND
-         Wednesday)
-        OR
-        Friday
-    
+         Open[7] > Close[8])
+    AND
+        (Wednesday OR Friday)
+
     Otherwise ab = 2
 
 Entry:
@@ -63,6 +62,7 @@ class Gold2ATRStrategy(BaseStrategy):
         self._atr_length: int = p.get("atr_length", 14)
         self._atr_mult: float = p.get("atr_mult", 3.0)
         self._risk_dollars: float = p.get("risk_dollars", 20000.0)
+        self._stop_loss_usd: float = p.get("stop_loss_usd", 12000.0)
         
         # Position state tracking
         self._position_state = self._load_position_state()
@@ -168,21 +168,20 @@ class Gold2ATRStrategy(BaseStrategy):
     def _compute_ab_signal(self, df: pd.DataFrame) -> pd.Series:
         """
         Compute ab signal matching TradeStation logic.
-        
+
         ab = 1 if:
             (Low[0] > Close[5] AND
              Open[3] > Low[9] AND
-             Open[7] > Close[8] AND
-             Wednesday)
-            OR
-            Friday
-        
+             Open[7] > Close[8])
+        AND
+            (Wednesday OR Friday)
+
         Otherwise ab = 2
-        
+
         Note: Python weekday: Monday=0, Wednesday=2, Friday=4
         """
         ab = pd.Series(2, index=df.index)  # Default to 2
-        
+
         for i in range(10, len(df)):  # Need at least 10 bars
             try:
                 # Get required bars
@@ -193,27 +192,27 @@ class Gold2ATRStrategy(BaseStrategy):
                 open_7 = df["open"].iloc[i - 7]
                 close_8 = df["close"].iloc[i - 8]
                 day_of_week = df["day_of_week"].iloc[i]
-                
+
                 # Check for valid values
                 if any(pd.isna(v) for v in [low_0, close_5, open_3, low_9, open_7, close_8]):
                     continue
-                
+
                 # Conditions
                 cond1 = low_0 > close_5
                 cond2 = open_3 > low_9
                 cond3 = open_7 > close_8
                 is_wednesday = day_of_week == 2
                 is_friday = day_of_week == 4
-                
-                # TradeStation logic (exact precedence):
-                # (cond1 AND cond2 AND cond3 AND Wednesday) OR Friday
-                signal = (cond1 and cond2 and cond3 and is_wednesday) or is_friday
-                
+
+                # TradeStation logic:
+                # (cond1 AND cond2 AND cond3) AND (Wednesday OR Friday)
+                signal = (cond1 and cond2 and cond3) and (is_wednesday or is_friday)
+
                 ab.iloc[i] = 1 if signal else 2
-                
+
             except (IndexError, KeyError):
                 continue
-        
+
         return ab
 
     def _compute_position_size(self, df: pd.DataFrame) -> pd.Series:
@@ -448,7 +447,25 @@ class Gold2ATRStrategy(BaseStrategy):
             
             trade = self.order_mgr._ib.placeOrder(contract, order)
             self.order_mgr._ib.waitOnUpdate()
-            
+
+            # Place stop loss order
+            sl_distance = self._stop_loss_usd / self.spec.point_value
+            sl_price = self.order_mgr.round_tick(limit_px - sl_distance, self.spec.tick_size)
+
+            from ib_insync import StopOrder
+            sl_order = StopOrder("SELL", qty, sl_price)
+            sl_order.account = self.account
+            sl_order.tif = "GTC"
+            sl_order.outsideRth = True
+
+            sl_trade = self.order_mgr._ib.placeOrder(contract, sl_order)
+            self.order_mgr._ib.waitOnUpdate()
+
+            self.log.info(
+                "Placed STOP LOSS order: SELL %d @ %.2f (stop loss $%.0f/contract)",
+                qty, sl_price, self._stop_loss_usd
+            )
+
             # Open trade in database
             trade_id = self.db.open_trade(
                 strategy_name=self.name,
@@ -495,7 +512,6 @@ class Gold2ATRStrategy(BaseStrategy):
                 quantity=qty,
                 limit_price=limit_px,
                 account=self.account,
-                cancel_bracket=False,  # No brackets in this strategy
             )
             
             # Close the open trade

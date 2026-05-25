@@ -197,7 +197,7 @@ class MNQCondition1Params:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 10
+    max_position: int = 1
     price_offset: float = 0.0  # Enter at market
     
     @property
@@ -268,7 +268,7 @@ class MESCondition1Params:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 10
+    max_position: int = 1
     price_offset: float = 0.0
     
     @property
@@ -495,12 +495,13 @@ class TreasuryEOMParams:
     use_rth: bool = False
     
     # Strategy parameters
-    days_before_eom: int = 14  # Enter N trading days before end of month
+    days_before_eom: int = 2  # Enter N trading days before end of month
     price_offset: float = 0.10  # Entry: mid + offset, Exit: mid - offset
-    
+
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 5
+    stop_loss_usd: float = 3500.0  # Stop loss per contract
     
     @property
     def contract_spec(self) -> "ContractSpec":
@@ -525,7 +526,7 @@ class TreasuryEOMParams:
 
     # Instantiate default configuration
 TREASURY_EOM_PARAMS = TreasuryEOMParams(
-    days_before_eom=3,
+    days_before_eom=2,
     price_offset=0.15,
 )
 
@@ -570,12 +571,13 @@ class Treasury30YEOMParams:
     use_rth: bool = False
     
     # Strategy parameters
-    days_before_eom: int = 6  # Enter 6 trading days before end of month
+    days_before_eom: int = 5  # Enter 5 trading days before last Friday of month
     price_offset: float = 0.20  # Entry: mid + offset, Exit: mid - offset
-    
+
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 5
+    stop_loss_usd: float = 8000.0  # Stop loss per contract
     
     @property
     def contract_spec(self) -> "ContractSpec":
@@ -669,7 +671,7 @@ class TreasuryStochHurstParams:
     
     # Risk management
     risk_usd: float = 1100.0
-    max_position: int = 1
+    max_position: int = 5
     
     def __post_init__(self):
         """Calculate price_offset from ticks."""
@@ -901,6 +903,7 @@ class Gold2Params:
             "atr_length": self.atr_length,
             "atr_mult": self.atr_mult,
             "risk_dollars": self.risk_dollars,
+            "stop_loss_usd": self.stop_loss_dollars,
         }
 
 

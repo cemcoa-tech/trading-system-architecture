@@ -415,3 +415,345 @@ Strategy Gold2 will use default account U22862141
 [2026-05-18 16:59:48] INFO     | trading.broker         | Disconnected from IBKR
 [2026-05-18 16:59:48] INFO     | trading.db             | Database connection closed
 [2026-05-18 16:59:48] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-19 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-19 16:59:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-19 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-19 16:59:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-19 16:59:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-19 16:59:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-19 16:59:45] INFO     | ib_insync.client       | Connected
+[2026-05-19 16:59:45] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=123, clientId=8935, permId=1514814684, action='SELL', totalQuantity=1.0, orderType='LMT', lmtPrice=4662.0, auxPrice=0.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, rule80A='0', openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=123, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=123, clientId=8935, permId=1514814684, action='SELL', totalQuantity=1.0, orderType='LMT', lmtPrice=4662.0, auxPrice=0.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, rule80A='0', openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=123, status='Submitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1514814684, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 19, 21, 59, 45, 765141, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=124, clientId=8935, permId=1514814685, action='SELL', totalQuantity=1.0, orderType='STP', lmtPrice=0.0, auxPrice=4442.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, outsideRth=True, rule80A='0', trailStopPrice=4442.0, openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=124, status='PreSubmitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=124, clientId=8935, permId=1514814685, action='SELL', totalQuantity=1.0, orderType='STP', lmtPrice=0.0, auxPrice=4442.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, outsideRth=True, rule80A='0', trailStopPrice=4442.0, openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=124, status='PreSubmitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1514814685, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='trigger', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 19, 21, 59, 45, 766676, tzinfo=datetime.timezone.utc), status='PreSubmitted', message='', errorCode=0)], advancedError='')
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-19 16:59:45] INFO     | ib_insync.client       | API connection ready
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7737.27)
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=15.0, avgCost=36972.62)
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-19 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7737.02)
+[2026-05-19 16:59:46] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-19 16:59:46] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-05-19 16:59:47] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-05-19 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-19 16:59:47] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-05-19 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-19 16:59:47] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-05-19 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-19 16:59:48] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-05-19 16:59:48] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-19 16:59:48] INFO     | trading.broker         | Fetched 1498 historical bars for GCM6
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | Last bar  date=2026-05-19  close=4511.20  ATR=118.8539  ab=2  PosSize=1  DoW=1
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-05-19 16:59:48] INFO     | trading.strategy.Gold2 | Signal: NONE  reason=ab=2 (no entry signal)
+[2026-05-19 16:59:49] INFO     | trading.strategy.Gold2 | No order required
+[2026-05-19 16:59:49] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-05-19 16:59:49] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 405 B sent in 13 messages, 105 kB received in 397 messages, session time 3.32 s.
+[2026-05-19 16:59:49] INFO     | ib_insync.client       | Disconnecting
+[2026-05-19 16:59:49] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-19 16:59:49] INFO     | trading.db             | Database connection closed
+[2026-05-19 16:59:49] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-20 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-20 16:59:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-20 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-20 16:59:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-20 16:59:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-20 16:59:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-20 16:59:45] INFO     | ib_insync.client       | Connected
+[2026-05-20 16:59:45] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=123, clientId=8935, permId=1514814684, action='SELL', totalQuantity=1.0, orderType='LMT', lmtPrice=4662.0, auxPrice=0.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, rule80A='0', openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=123, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=123, clientId=8935, permId=1514814684, action='SELL', totalQuantity=1.0, orderType='LMT', lmtPrice=4662.0, auxPrice=0.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, rule80A='0', openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=123, status='Submitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1514814684, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 20, 21, 59, 45, 804890, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=124, clientId=8935, permId=1514814685, action='SELL', totalQuantity=1.0, orderType='STP', lmtPrice=0.0, auxPrice=4442.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, outsideRth=True, rule80A='0', trailStopPrice=4442.0, openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=124, status='PreSubmitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=124, clientId=8935, permId=1514814685, action='SELL', totalQuantity=1.0, orderType='STP', lmtPrice=0.0, auxPrice=4442.0, tif='GTC', ocaGroup='1514814683', ocaType=3, displaySize=2147483647, outsideRth=True, rule80A='0', trailStopPrice=4442.0, openClose='', volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=124, status='PreSubmitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1514814685, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='trigger', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 20, 21, 59, 45, 805461, tzinfo=datetime.timezone.utc), status='PreSubmitted', message='', errorCode=0)], advancedError='')
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), order=Order(orderId=155, clientId=8935, permId=1859006115, action='BUY', totalQuantity=1.0, orderType='LMT', lmtPrice=110.90625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=111.90625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=155, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), order=Order(orderId=155, clientId=8935, permId=1859006115, action='BUY', totalQuantity=1.0, orderType='LMT', lmtPrice=110.90625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=111.90625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=155, status='Submitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1859006115, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 20, 21, 59, 45, 806466, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-20 16:59:45] INFO     | ib_insync.client       | API connection ready
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7737.27)
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=16.0, avgCost=36967.416875)
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-20 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7737.02)
+[2026-05-20 16:59:46] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-20 16:59:46] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-05-20 16:59:48] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-05-20 16:59:48] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-20 16:59:48] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-05-20 16:59:48] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-20 16:59:48] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-05-20 16:59:48] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-20 16:59:48] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-20 16:59:48] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-05-20 16:59:48] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-20 16:59:49] INFO     | trading.broker         | Fetched 1499 historical bars for GCM6
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | Last bar  date=2026-05-20  close=4535.30  ATR=117.7500  ab=2  PosSize=1  DoW=2
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | Signal: NONE  reason=ab=2 (no entry signal)
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | No order required
+[2026-05-20 16:59:49] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-05-20 16:59:49] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 405 B sent in 13 messages, 107 kB received in 402 messages, session time 3.48 s.
+[2026-05-20 16:59:49] INFO     | ib_insync.client       | Disconnecting
+[2026-05-20 16:59:49] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-20 16:59:49] INFO     | trading.db             | Database connection closed
+[2026-05-20 16:59:49] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-21 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-21 16:59:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-21 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-21 16:59:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-21 16:59:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-21 16:59:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-21 16:59:45] INFO     | ib_insync.client       | Connected
+[2026-05-21 16:59:45] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-21 16:59:45] INFO     | ib_insync.client       | API connection ready
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=0.0, avgCost=0.0)
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=12.0, avgCost=36967.416875)
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-21 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+[2026-05-21 16:59:46] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-21 16:59:46] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-05-21 16:59:47] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-05-21 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-21 16:59:47] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-05-21 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-21 16:59:47] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-05-21 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-21 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-21 16:59:47] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-05-21 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-21 16:59:48] INFO     | trading.broker         | Fetched 1500 historical bars for GCM6
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | Last bar  date=2026-05-21  close=4542.50  ATR=115.3465  ab=2  PosSize=1  DoW=3
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | Signal: NONE  reason=ab=2 (no entry signal)
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | No order required
+[2026-05-21 16:59:48] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-05-21 16:59:48] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 397 B sent in 13 messages, 101 kB received in 389 messages, session time 2.82 s.
+[2026-05-21 16:59:48] INFO     | ib_insync.client       | Disconnecting
+[2026-05-21 16:59:48] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-21 16:59:48] INFO     | trading.db             | Database connection closed
+[2026-05-21 16:59:48] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-24 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-24 16:59:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-24 16:59:45] INFO     | trading.main           | ============================================================
+[2026-05-24 16:59:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-24 16:59:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-24 16:59:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-24 16:59:45] INFO     | ib_insync.client       | Connected
+[2026-05-24 16:59:45] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=815824229, symbol='ZN', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZNM6', tradingClass='ZN'), order=Order(orderId=24, clientId=8935, permId=1261663411, action='BUY', totalQuantity=5.0, orderType='LMT', lmtPrice=109.40625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=110.40625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=24, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=815824229, symbol='ZN', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZNM6', tradingClass='ZN'), order=Order(orderId=24, clientId=8935, permId=1261663411, action='BUY', totalQuantity=5.0, orderType='LMT', lmtPrice=109.40625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=110.40625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=24, status='Submitted', filled=0.0, remaining=5.0, avgFillPrice=0.0, permId=1261663411, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 24, 21, 59, 45, 658024, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-24 16:59:45] INFO     | ib_insync.client       | API connection ready
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=8.0, avgCost=36967.416875)
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-24 16:59:45] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+[2026-05-24 16:59:45] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-24 16:59:45] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-05-24 16:59:47] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-05-24 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-24 16:59:47] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-05-24 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-24 16:59:47] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-05-24 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-24 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-24 16:59:47] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-05-24 16:59:47] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-24 16:59:48] INFO     | trading.broker         | Fetched 1501 historical bars for GCM6
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | Last bar  date=2026-05-22  close=4523.20  ATR=111.3217  ab=1  PosSize=1  DoW=4
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | ENTRY: ab=1, ATR-sized position=1 (ATR=111.3217, risk=$20000)
+[2026-05-24 16:59:48] INFO     | trading.strategy.Gold2 | Signal: ENTRY_LONG  reason=Entry: ab=1 signal, ATR-based sizing
+[2026-05-24 16:59:54] INFO     | trading.strategy.Gold2 | Market price: 4523.20 (FALLBACK_CLOSE)
+[2026-05-24 16:59:54] INFO     | trading.strategy.Gold2 | Placing ENTRY order: BUY 1 @ 4533.20 (market=4523.20 + offset=10.00)
+[2026-05-24 16:59:54] INFO     | ib_insync.ib           | placeOrder: New order Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=LimitOrder(orderId=35, clientId=8935, action='BUY', totalQuantity=1, lmtPrice=4533.2, tif='GTC', outsideRth=True, account='U20859646'), orderStatus=OrderStatus(orderId=35, status='PendingSubmit', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 24, 21, 59, 54, 579391, tzinfo=datetime.timezone.utc), status='PendingSubmit', message='', errorCode=0)], advancedError='')
+[2026-05-24 16:59:54] INFO     | ib_insync.wrapper      | Warning 2109, reqId 35: Order Event Warning:Attribute 'Outside Regular Trading Hours' is ignored based on the order type and destination. PlaceOrder is now being processed.
+[2026-05-24 16:59:54] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-05-24 16:59:54] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 815 B sent in 20 messages, 102 kB received in 392 messages, session time 8.94 s.
+[2026-05-24 16:59:54] INFO     | ib_insync.client       | Disconnecting
+[2026-05-24 16:59:54] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-24 16:59:54] INFO     | trading.db             | Database connection closed
+[2026-05-24 16:59:54] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-05-25 02:08:05] INFO     | trading.main           | ============================================================
+[2026-05-25 02:08:05] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-25 02:08:05] INFO     | trading.main           | ============================================================
+[2026-05-25 02:08:05] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-25 02:08:05] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-25 02:08:05] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-25 02:08:05] INFO     | ib_insync.client       | Connected
+[2026-05-25 02:08:05] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=815824229, symbol='ZN', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZNM6', tradingClass='ZN'), order=Order(orderId=24, clientId=8935, permId=1261663411, action='BUY', totalQuantity=5.0, orderType='LMT', lmtPrice=109.40625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=110.40625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=24, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=815824229, symbol='ZN', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZNM6', tradingClass='ZN'), order=Order(orderId=24, clientId=8935, permId=1261663411, action='BUY', totalQuantity=5.0, orderType='LMT', lmtPrice=109.40625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=110.40625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=24, status='Submitted', filled=0.0, remaining=5.0, avgFillPrice=0.0, permId=1261663411, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 25, 7, 8, 5, 988254, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=35, clientId=8935, permId=1261663412, action='BUY', totalQuantity=1.0, orderType='LMT', lmtPrice=4533.2, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=4534.2, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U20859646', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=35, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=35, clientId=8935, permId=1261663412, action='BUY', totalQuantity=1.0, orderType='LMT', lmtPrice=4533.2, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=4534.2, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U20859646', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=35, status='Submitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1261663412, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 25, 7, 8, 5, 988765, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | Warning 2110, reqId -1: Connectivity between Trader Workstation and server is broken. It will be restored automatically.
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | Warning 2103, reqId -1: Market data farm connection is broken:hfarm
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.cashhmds
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.ushmds
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | Warning 2157, reqId -1: Sec-def data farm connection is broken:secdefhk
+[2026-05-25 02:08:05] INFO     | ib_insync.client       | API connection ready
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=8.0, avgCost=36967.416875)
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-25 02:08:05] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+[2026-05-25 02:08:21] ERROR    | ib_insync.ib           | open orders request timed out
+[2026-05-25 02:08:21] ERROR    | ib_insync.ib           | completed orders request timed out
+[2026-05-25 02:08:21] ERROR    | ib_insync.ib           | account updates for U16668533 request timed out
+[2026-05-25 02:08:21] ERROR    | ib_insync.ib           | account updates for U20859646 request timed out
+[2026-05-25 02:08:21] ERROR    | ib_insync.ib           | account updates for U22862141 request timed out
+[2026-05-25 02:08:36] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 152 B sent in 9 messages, 2.39 kB received in 19 messages, session time 30.0 s.
+[2026-05-25 02:08:36] INFO     | ib_insync.client       | Disconnecting
+[2026-05-25 02:08:36] WARNING  | trading.broker         | Connection attempt 1 failed: 
+[2026-05-25 02:08:41] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 2/3)
+[2026-05-25 02:08:41] INFO     | ib_insync.client       | Disconnected.
+[2026-05-25 02:08:41] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-25 02:08:41] INFO     | ib_insync.client       | Connected
+[2026-05-25 02:08:41] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | Warning 2110, reqId -1: Connectivity between Trader Workstation and server is broken. It will be restored automatically.
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | Warning 2103, reqId -1: Market data farm connection is broken:hfarm
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.cashhmds
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.ushmds
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | Warning 2157, reqId -1: Sec-def data farm connection is broken:secdefhk
+[2026-05-25 02:08:41] INFO     | ib_insync.client       | API connection ready
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=8.0, avgCost=36967.416875)
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-25 02:08:41] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+[2026-05-25 02:08:56] ERROR    | ib_insync.ib           | open orders request timed out
+[2026-05-25 02:08:56] ERROR    | ib_insync.ib           | completed orders request timed out
+[2026-05-25 02:08:56] ERROR    | ib_insync.ib           | account updates for U16668533 request timed out
+[2026-05-25 02:08:56] ERROR    | ib_insync.ib           | account updates for U20859646 request timed out
+[2026-05-25 02:08:56] ERROR    | ib_insync.ib           | account updates for U22862141 request timed out
+[2026-05-25 02:09:11] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 152 B sent in 9 messages, 2.39 kB received in 19 messages, session time 30.0 s.
+[2026-05-25 02:09:11] INFO     | ib_insync.client       | Disconnecting
+[2026-05-25 02:09:11] WARNING  | trading.broker         | Connection attempt 2 failed: 
+[2026-05-25 02:09:16] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 3/3)
+[2026-05-25 02:09:16] INFO     | ib_insync.client       | Disconnected.
+[2026-05-25 02:09:16] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-25 02:09:16] INFO     | ib_insync.client       | Connected
+[2026-05-25 02:09:16] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | Warning 2110, reqId -1: Connectivity between Trader Workstation and server is broken. It will be restored automatically.
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | Warning 2103, reqId -1: Market data farm connection is broken:hfarm
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.cashhmds
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.ushmds
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | Warning 2157, reqId -1: Sec-def data farm connection is broken:secdefhk
+[2026-05-25 02:09:16] INFO     | ib_insync.client       | API connection ready
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=8.0, avgCost=36967.416875)
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-25 02:09:16] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+^C[2026-05-25 02:09:28] INFO     | trading.main           | ============================================================
+[2026-05-25 02:09:28] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-25 02:09:28] INFO     | trading.main           | ============================================================
+[2026-05-25 02:09:28] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-25 02:09:28] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-25 02:09:28] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-25 02:09:28] INFO     | ib_insync.client       | Connected
+[2026-05-25 02:09:28] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=815824229, symbol='ZN', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZNM6', tradingClass='ZN'), order=Order(orderId=24, clientId=8935, permId=1261663411, action='BUY', totalQuantity=5.0, orderType='LMT', lmtPrice=109.40625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=110.40625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=24, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=815824229, symbol='ZN', lastTradeDateOrContractMonth='20260618', right='?', multiplier='1000', exchange='CBOT', currency='USD', localSymbol='ZNM6', tradingClass='ZN'), order=Order(orderId=24, clientId=8935, permId=1261663411, action='BUY', totalQuantity=5.0, orderType='LMT', lmtPrice=109.40625, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=110.40625, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U22862141', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=24, status='Submitted', filled=0.0, remaining=5.0, avgFillPrice=0.0, permId=1261663411, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 25, 7, 9, 28, 701966, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | openOrder: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=35, clientId=8935, permId=1261663412, action='BUY', totalQuantity=1.0, orderType='LMT', lmtPrice=4533.2, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=4534.2, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U20859646', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=35, status='Submitted', filled=0.0, remaining=0.0, avgFillPrice=0.0, permId=0, parentId=0, lastFillPrice=0.0, clientId=0, whyHeld='', mktCapPrice=0.0), fills=[], log=[], advancedError='')
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | orderStatus: Trade(contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', right='?', multiplier='100', exchange='COMEX', currency='USD', localSymbol='GCM6', tradingClass='GC'), order=Order(orderId=35, clientId=8935, permId=1261663412, action='BUY', totalQuantity=1.0, orderType='LMT', lmtPrice=4533.2, auxPrice=0.0, tif='GTC', ocaType=3, displaySize=2147483647, trailStopPrice=4534.2, volatilityType=0, deltaNeutralOrderType='None', referencePriceType=0, account='U20859646', clearingIntent='IB', adjustedOrderType='None', cashQty=0.0, dontUseAutoPriceForHedge=True), orderStatus=OrderStatus(orderId=35, status='Submitted', filled=0.0, remaining=1.0, avgFillPrice=0.0, permId=1261663412, parentId=0, lastFillPrice=0.0, clientId=8935, whyHeld='', mktCapPrice=0.0), fills=[], log=[TradeLogEntry(time=datetime.datetime(2026, 5, 25, 7, 9, 28, 702970, tzinfo=datetime.timezone.utc), status='Submitted', message='', errorCode=0)], advancedError='')
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | Warning 2110, reqId -1: Connectivity between Trader Workstation and server is broken. It will be restored automatically.
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | Warning 2103, reqId -1: Market data farm connection is broken:hfarm
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.cashhmds
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.ushmds
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | Warning 2157, reqId -1: Sec-def data farm connection is broken:secdefhk
+[2026-05-25 02:09:28] INFO     | ib_insync.client       | API connection ready
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=8.0, avgCost=36967.416875)
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-25 02:09:28] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+[2026-05-25 02:09:43] ERROR    | ib_insync.ib           | open orders request timed out
+[2026-05-25 02:09:43] ERROR    | ib_insync.ib           | completed orders request timed out
+[2026-05-25 02:09:43] ERROR    | ib_insync.ib           | account updates for U16668533 request timed out
+[2026-05-25 02:09:43] ERROR    | ib_insync.ib           | account updates for U20859646 request timed out
+[2026-05-25 02:09:43] ERROR    | ib_insync.ib           | account updates for U22862141 request timed out
+^C[2026-05-25 15:56:18] INFO     | trading.main           | ============================================================
+[2026-05-25 15:56:18] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-05-25 15:56:18] INFO     | trading.main           | ============================================================
+[2026-05-25 15:56:18] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-05-25 15:56:18] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-05-25 15:56:18] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-05-25 15:56:18] INFO     | ib_insync.client       | Connected
+[2026-05-25 15:56:18] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-05-25 15:56:18] INFO     | ib_insync.client       | API connection ready
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=8.0, avgCost=36967.416875)
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=430360630, symbol='GC', lastTradeDateOrContractMonth='20260626', multiplier='100', currency='USD', localSymbol='GCM6', tradingClass='GC'), position=1.0, avgCost=454702.52)
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | position: Position(account='U22862141', contract=Future(conId=815824224, symbol='ZB', lastTradeDateOrContractMonth='20260618', multiplier='1000', currency='USD', localSymbol='ZBM6', tradingClass='ZB'), position=1.0, avgCost=110720.49)
+[2026-05-25 15:56:18] INFO     | ib_insync.wrapper      | position: Position(account='U20859646', contract=Future(conId=751357008, symbol='MBT', lastTradeDateOrContractMonth='20260626', multiplier='0.1', currency='USD', localSymbol='MBTM6', tradingClass='MBT'), position=10.0, avgCost=7817.17)
+[2026-05-25 15:56:18] INFO     | ib_insync.ib           | Synchronization complete
+[2026-05-25 15:56:18] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-05-25 15:56:19] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-05-25 15:56:19] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-25 15:56:19] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-05-25 15:56:19] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-05-25 15:56:19] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-05-25 15:56:19] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-25 15:56:19] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-25 15:56:19] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-05-25 15:56:19] INFO     | trading.broker         | Qualified contract: GCM6  conId=430360630
+[2026-05-25 15:56:20] INFO     | trading.broker         | Fetched 1502 historical bars for GCM6
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | Last bar  date=2026-05-26  close=4573.60  ATR=107.6130  ab=2  PosSize=1  DoW=1
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | Signal: NONE  reason=ab=2 (no entry signal)
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | No order required
+[2026-05-25 15:56:20] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-05-25 15:56:20] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 397 B sent in 13 messages, 101 kB received in 385 messages, session time 2.56 s.
+[2026-05-25 15:56:20] INFO     | ib_insync.client       | Disconnecting
+[2026-05-25 15:56:20] INFO     | trading.broker         | Disconnected from IBKR
+[2026-05-25 15:56:20] INFO     | trading.db             | Database connection closed
+[2026-05-25 15:56:20] INFO     | trading.main           | ALL STRATEGIES COMPLETE

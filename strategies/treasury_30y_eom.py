@@ -30,7 +30,7 @@ from execution.broker import Broker
 from execution.order_manager import OrderManager
 from strategies.base_strategy import BaseStrategy, Signal
 from utils.calendar_utils import (
-    trading_days_before_eom,
+    trading_days_before_last_friday_of_month,
     is_first_trading_day_of_month,
     effective_trade_date,
 )
@@ -57,6 +57,7 @@ class Treasury30YEOMStrategy(BaseStrategy):
         p = params.params
         self._days_before_eom: int = p.get("days_before_eom", 6)
         self._price_offset: float = p.get("price_offset", 0.20)
+        self._stop_loss_usd: float = p.get("stop_loss_usd", 8000.0)
         
         # Position state tracking
         self._position_state = self._load_position_state()
@@ -170,45 +171,45 @@ class Treasury30YEOMStrategy(BaseStrategy):
         Just add calendar info.
         """
         today = effective_trade_date()
-        
-        days_before_eom = trading_days_before_eom(today)
+
+        days_before_last_friday = trading_days_before_last_friday_of_month(today)
         is_first_td = is_first_trading_day_of_month(today)
-        
+
         self.log.info(
-            "Calendar  date=%s  days_before_eom=%s  is_first_td=%s",
+            "Calendar  date=%s  days_before_last_friday=%s  is_first_td=%s",
             today,
-            days_before_eom,
+            days_before_last_friday,
             is_first_td,
         )
-        
+
         # Store calendar info in DataFrame (not really used, but for consistency)
         if len(df) > 0:
-            df.loc[df.index[-1], 'days_before_eom'] = days_before_eom
+            df.loc[df.index[-1], 'days_before_last_friday'] = days_before_last_friday
             df.loc[df.index[-1], 'is_first_td'] = is_first_td
-        
+
         return df
 
     def generate_signal(self, df: pd.DataFrame, current_pos: int) -> Signal:
         """
         Decision logic based on calendar:
-        
+
         Entry:
-            - Today is 6 trading days before end of month
+            - Today is N trading days before last Friday of month
             - Currently flat
             → ENTRY_LONG
-        
+
         Exit:
             - Today is first trading day of next month
             - Currently long
             → EXIT_LONG
         """
         today = effective_trade_date()
-        
-        days_before_eom = trading_days_before_eom(today)
+
+        days_before_last_friday = trading_days_before_last_friday_of_month(today)
         is_first_td = is_first_trading_day_of_month(today)
-        
-        if days_before_eom is None:
-            self.log.error("Could not calculate trading days before EOM")
+
+        if days_before_last_friday is None:
+            self.log.error("Could not calculate trading days before last Friday")
             return Signal(
                 signal_type="NONE",
                 reason="Calendar calculation error",
@@ -216,13 +217,13 @@ class Treasury30YEOMStrategy(BaseStrategy):
                 indicators={},
                 meta={"date": str(today)},
             )
-        
+
         # Build indicators dict
         indicators = {
             "date": str(today),
-            "days_before_eom": days_before_eom,
+            "days_before_last_friday": days_before_last_friday,
             "is_first_trading_day": is_first_td,
-            "target_days_before_eom": self._days_before_eom,
+            "target_days_before_last_friday": self._days_before_eom,
         }
         
         meta = {
@@ -321,8 +322,8 @@ class Treasury30YEOMStrategy(BaseStrategy):
             )
 
         # ── ENTRY LOGIC (if flat) ────────────────────────────────────────
-        
-        if current_pos == 0 and days_before_eom == self._days_before_eom:
+
+        if current_pos == 0 and days_before_last_friday == self._days_before_eom:
             # Safety check: ensure position_state agrees we're flat
             if self._position_state["in_position"]:
                 self.log.warning("Skipping entry: position_state shows in_position=True despite current_pos=0")
@@ -345,16 +346,16 @@ class Treasury30YEOMStrategy(BaseStrategy):
             
             # Save position state to database
             self._save_position_state()
-            
+
             self.log.info(
-                "ENTRY: %d trading days before end of month (target=%d)",
-                days_before_eom,
+                "ENTRY: %d trading days before last Friday of month (target=%d)",
+                days_before_last_friday,
                 self._days_before_eom,
             )
-            
+
             return Signal(
                 signal_type="ENTRY_LONG",
-                reason=f"Entry: {days_before_eom} trading days before month-end",
+                reason=f"Entry: {days_before_last_friday} trading days before last Friday of month",
                 close_price=close_price,
                 indicators=indicators,
                 meta=meta,
@@ -372,13 +373,13 @@ class Treasury30YEOMStrategy(BaseStrategy):
             )
         
         # ── NO SIGNAL ────────────────────────────────────────────────────
-        
+
         reason_parts = []
         if current_pos == 0:
-            reason_parts.append(f"Waiting for {self._days_before_eom} days before EOM (currently {days_before_eom})")
+            reason_parts.append(f"Waiting for {self._days_before_eom} days before last Friday (currently {days_before_last_friday})")
         else:
             reason_parts.append(f"Holding position until first trading day of next month")
-        
+
         reason = " | ".join(reason_parts) if reason_parts else "No actionable signal"
         
         return Signal(
@@ -437,7 +438,25 @@ class Treasury30YEOMStrategy(BaseStrategy):
             
             trade = self.order_mgr._ib.placeOrder(contract, order)
             self.order_mgr._ib.waitOnUpdate()
-            
+
+            # Place stop loss order
+            sl_distance = self._stop_loss_usd / self.spec.point_value
+            sl_price = self.order_mgr.round_tick(limit_px - sl_distance, self.spec.tick_size)
+
+            from ib_insync import StopOrder
+            sl_order = StopOrder("SELL", qty, sl_price)
+            sl_order.account = self.account
+            sl_order.tif = "GTC"
+            sl_order.outsideRth = True
+
+            sl_trade = self.order_mgr._ib.placeOrder(contract, sl_order)
+            self.order_mgr._ib.waitOnUpdate()
+
+            self.log.info(
+                "Placed STOP LOSS order: SELL %d @ %.6f (stop loss $%.0f/contract)",
+                qty, sl_price, self._stop_loss_usd
+            )
+
             # Update position state with actual entry price
             self._position_state["entry_price"] = limit_px
             self._save_position_state()
