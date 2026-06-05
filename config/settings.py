@@ -47,7 +47,7 @@ class IBKRConfigAlt:
 @dataclass(frozen=True)
 class MarketDataConfig:
     """Historical / live data request parameters."""
-    duration_str: str = "20 Y"
+    duration_str: str = "2 Y"
     bar_size: str = "1 day"
     what_to_show: str = "TRADES"
     use_rth: bool = False
@@ -87,13 +87,13 @@ class ContractSpec:
 # ── Pre-built contract specs ────────────────────────────────────────────────
 MGC_SPEC = ContractSpec(
     symbol="GC",
-    last_trade_date="202606",
+    last_trade_date="202608",
     exchange="COMEX",
     tick_size=0.1,
     point_value=100.0,
     price_offset=5.0,
     data_symbol="GC",
-    data_last_trade_date="202606",
+    data_last_trade_date="202608",
     data_exchange="COMEX",
 )
 
@@ -637,8 +637,8 @@ class TreasuryStochHurstParams:
     signal_contract_month: str = "202606"
     
     # Execution contract (MWN - Micro 30-Year Note)
-    symbol: str = "MTN"  # MWN actual symbol is MTN
-    data_symbol: str = "MTN"
+    symbol: str = "ZB"  # Micro 30-Year Note futures
+    data_symbol: str = "ZB"
     contract_month: str = "202606"
     exchange: str = "CBOT"
     currency: str = "USD"
@@ -746,7 +746,7 @@ class RBCombinedParams:
     # Contract specifications
     symbol: str = "RB"
     data_symbol: str = "RB"
-    contract_month: str = "202606"  # Update monthly
+    contract_month: str = "202607"  # Update monthly
     exchange: str = "NYMEX"
     currency: str = "USD"
     tick_size: float = 0.0001  # RB = $0.0001 per gallon
@@ -850,7 +850,7 @@ class Gold2Params:
     # Contract specifications
     symbol: str = "GC"
     data_symbol: str = "GC"
-    contract_month: str = "202606"  # Update monthly
+    contract_month: str = "202608"  # Update monthly
     exchange: str = "COMEX"
     currency: str = "USD"
     tick_size: float = 0.1  # GC = $0.10 per troy ounce
@@ -999,3 +999,105 @@ class CornVolatilityParams:
 
 # Instantiate default configuration
 CORN_VOLATILITY_PARAMS = CornVolatilityParams()
+
+
+@dataclass
+class MESCubeHLCParams:
+    """
+    MES (Micro E-mini S&P 500) CubeHLC Strategy
+    
+    Entry Condition1 (all must be true):
+        - high[1] > open[5]
+        - low[3] <= high[8]
+        - close[0] <= low[5]
+        - CubeHLC[0] <= CubeHLC[1]
+        - dayofmonth(date) > 1
+        - month(date) <> 8 (not August)
+        - close < average(close, 10)
+    
+    Where CubeHLC = (High * Low * Close)^(1/3)
+    
+    Position Sizing:
+        ATR-based: PosSize = StopLimit / (ATR * ATRMult * PointValue)
+        Entry with half position (PosSize/2)
+    
+    Exits:
+        1) Stop Loss: $750 per contract (150 points * $5)
+        2) Profit Exit: 10 profitable closes → exit next bar
+        3) Time Exit: 10 bars → exit next bar
+        4) August Exit: month = 8 → exit next bar
+    
+    Direction: Long-only
+    """
+    
+    # Strategy identification
+    name: str = "MES_CubeHLC"
+    
+    # Contract specifications
+    symbol: str = "MES"
+    data_symbol: str = "MES"
+    contract_month: str = "202606"  # June 2026 contract
+    exchange: str = "CME"
+    currency: str = "USD"
+    tick_size: float = 0.25  # MES = 0.25 index points
+    point_value: float = 5.0  # $5 per index point
+    
+    # Data fetching
+    duration: str = "3 Y"
+    bar_size: str = "1 day"
+    what_to_show: str = "TRADES"
+    use_rth: bool = False
+    
+    # Indicator parameters
+    avg_days: int = 10  # Moving average period
+    
+    # Position sizing (ATR-based)
+    atr_length: int = 14
+    atr_mult: float = 2.0
+    stop_limit_points: float = 150.0  # Stop loss in points
+    
+    # Exit parameters
+    max_time: int = 10  # Max bars to hold
+    profitable_closes: int = 10  # Exit after N profitable closes
+    
+    # Execution parameters
+    price_offset: float = 0.0  # Enter at market open
+    
+    # Risk management
+    risk_usd: float = 750.0  # Stop loss in dollars (150 points * $5)
+    max_position: int = 10  # Max contracts (actual size ATR-based)
+    
+    @property
+    def stop_limit_dollars(self) -> float:
+        """Calculate stop loss in dollars."""
+        return self.stop_limit_points * self.point_value
+    
+    @property
+    def contract_spec(self) -> "ContractSpec":
+        return ContractSpec(
+            symbol=self.symbol,
+            last_trade_date=self.contract_month,
+            exchange=self.exchange,
+            currency=self.currency,
+            tick_size=self.tick_size,
+            point_value=self.point_value,
+            data_symbol=self.data_symbol,
+            data_last_trade_date=self.contract_month,
+            data_exchange=self.exchange,
+            price_offset=self.price_offset,
+        )
+    
+    @property
+    def params(self) -> Dict[str, Any]:
+        return {
+            "avg_days": self.avg_days,
+            "atr_length": self.atr_length,
+            "atr_mult": self.atr_mult,
+            "stop_limit_points": self.stop_limit_points,
+            "max_time": self.max_time,
+            "profitable_closes": self.profitable_closes,
+        }
+
+
+# Instantiate default configuration
+MES_CUBHLC_PARAMS = MESCubeHLCParams()

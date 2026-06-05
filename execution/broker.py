@@ -35,11 +35,8 @@ class Broker:
     # ── Connection lifecycle ─────────────────────────────────────────────
     def connect(self) -> None:
         """Connect with automatic retries."""
-        try:
-            util.startLoop()
-        except RuntimeError:
-            pass
-
+        # Skip util.startLoop() to avoid asyncio conflicts
+        
         for attempt in range(1, self._cfg.max_retries + 1):
             try:
                 log.info(
@@ -47,11 +44,11 @@ class Broker:
                     self._cfg.host, self._cfg.port,
                     attempt, self._cfg.max_retries,
                 )
+                # Try the simplest possible connection
                 self._ib.connect(
                     self._cfg.host,
                     self._cfg.port,
                     clientId=self._cfg.client_id,
-                    timeout=self._cfg.connect_timeout,
                 )
                 log.info("Connected to IBKR")
                 return

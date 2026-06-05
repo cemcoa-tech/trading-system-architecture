@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+
+# Initialize event loop at the very top before any imports
+import asyncio
+import sys
+if __name__ == "__main__":
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
 """
 main.py
 ───────
@@ -14,7 +21,6 @@ Designed to be called by cron / scheduler once per day after market close.
 
 import argparse
 import signal
-import sys
 import time
 from typing import List
 from config.settings import IBKRConfigAlt
@@ -53,7 +59,7 @@ def get_strategy_account(strategy_name: str) -> str:
     """Determine which account to use for order placement based on strategy."""
     # Account mapping for order placement
     account_mapping = {
-        "U20859646": ["btc2", "zb_stoch", "BTC2_ValueLow_SMA", "Treasury_Stoch_Hurst","gold2"],
+        "U20859646": ["btc2", "zb_stoch", "BTC2_ValueLow_SMA", "Treasury_Stoch_Hurst","gold2","mes2"],
         "U22862141": ["mgc", "mnq", "mes", "btc", "zn", "zb", "rb"]
     }
     
@@ -89,6 +95,7 @@ from strategies.treasury_stoch_hurst import TreasuryStochHurstStrategy
 from strategies.rb_combined import RBCombinedStrategy
 from strategies.gold2_atr import Gold2ATRStrategy
 from strategies.corn_volatility import CornVolatilityStrategy
+from strategies.mes_cubehlc import MESCubeHLCStrategy
 
 
 def build_strategies(
@@ -116,6 +123,7 @@ def build_strategies(
         RB_COMBINED_PARAMS,
         GOLD2_PARAMS,
         CORN_VOLATILITY_PARAMS,
+        MES_CUBHLC_PARAMS,
     )
     
     registry = {
@@ -132,7 +140,8 @@ def build_strategies(
         "BTC2_ValueLow_SMA": (BTC2_PARAMS_ALT, BTC2ValueLowSMAStrategy),
         "Treasury_Stoch_Hurst": (TREASURY_STOCH_HURST_PARAMS_ALT, TreasuryStochHurstStrategy),
         "gold2": (GOLD2_PARAMS, Gold2ATRStrategy),
-        "corn": (CORN_VOLATILITY_PARAMS, CornVolatilityStrategy)
+        "corn": (CORN_VOLATILITY_PARAMS, CornVolatilityStrategy),
+        "mes2": (MES_CUBHLC_PARAMS, MESCubeHLCStrategy),
     }
 
     strategies: List[BaseStrategy] = []

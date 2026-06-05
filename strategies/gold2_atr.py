@@ -130,8 +130,8 @@ class Gold2ATRStrategy(BaseStrategy):
 
     def fetch_data(self) -> pd.DataFrame:
         """Pull daily bars from GC contract."""
-        trade_ct = self.broker.qualify_contract(self.spec)
-        return self.broker.fetch_historical_bars(trade_ct)
+        data_ct = self.broker.qualify_data_contract(self.spec)
+        return self.broker.fetch_historical_bars(data_ct)
 
     def compute_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
         """

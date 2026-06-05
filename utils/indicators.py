@@ -382,3 +382,21 @@ def adx(high: pd.Series, low: pd.Series, close: pd.Series,
     adx_values = dx.rolling(length).mean()
     
     return adx_values
+
+def cube_hlc(high: pd.Series, low: pd.Series, close: pd.Series) -> pd.Series:
+    """
+    CubeHLC indicator - cube root of (High * Low * Close).
+    
+    CubeHLC = (H * L * C)^(1/3)
+    
+    Represents a geometric average of the three price components.
+    
+    Args:
+        high: High prices
+        low: Low prices
+        close: Close prices
+        
+    Returns:
+        Series of CubeHLC values
+    """
+    return np.power(high * low * close, 1/3)

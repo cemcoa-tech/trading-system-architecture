@@ -556,3 +556,90 @@ Strategy Corn_Volatility will use default account U22862141
 [2026-05-24 16:58:55] INFO     | trading.broker         | Disconnected from IBKR
 [2026-05-24 16:58:55] INFO     | trading.db             | Database connection closed
 [2026-05-24 16:58:55] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-06-03 16:58:52] INFO     | trading.main           | ============================================================
+[2026-06-03 16:58:52] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-03 16:58:52] INFO     | trading.main           | ============================================================
+[2026-06-03 16:58:52] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-03 16:58:52] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-03 16:58:52] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-03 16:58:52] INFO     | ib_insync.client       | Connected
+[2026-06-03 16:58:52] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-03 16:58:52] INFO     | ib_insync.client       | API connection ready
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=0.0, avgCost=0.0)
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | execDetails Execution(execId='00010181.6a1ff997.01.01', time=datetime.datetime(2026, 6, 3, 20, 43, 1, tzinfo=datetime.timezone.utc), acctNumber='U16668533', exchange='CME', side='SLD', shares=19.0, price=7546.25, permId=320908104, clientId=13, orderId=42, liquidation=0, cumQty=19.0, avgPrice=7546.25, orderRef='', evRule='', evMultiplier=0.0, modelCode='', lastLiquidity=1)
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | execDetails Execution(execId='00010181.6a1ff998.01.01', time=datetime.datetime(2026, 6, 3, 20, 43, 1, tzinfo=datetime.timezone.utc), acctNumber='U16668533', exchange='CME', side='SLD', shares=5.0, price=7546.0, permId=320908104, clientId=13, orderId=42, liquidation=0, cumQty=24.0, avgPrice=7546.197917, orderRef='', evRule='', evMultiplier=0.0, modelCode='', lastLiquidity=1)
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | commissionReport: CommissionReport(execId='00010181.6a1ff997.01.01', commission=11.78, currency='USD', realizedPNL=-6634.96625, yield_=0.0, yieldRedemptionDate=0)
+[2026-06-03 16:58:52] INFO     | ib_insync.wrapper      | commissionReport: CommissionReport(execId='00010181.6a1ff998.01.01', commission=3.1, currency='USD', realizedPNL=-1752.29375, yield_=0.0, yieldRedemptionDate=0)
+[2026-06-03 16:58:52] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-03 16:58:52] INFO     | trading.broker         | Connected to IBKR
+Strategy corn will use default account U22862141
+Strategy Corn_Volatility will use default account U22862141
+[2026-06-03 16:58:53] INFO     | trading.main           | Strategy Corn_Volatility will use account U22862141 for order placement
+[2026-06-03 16:58:53] INFO     | trading.strategy.Corn_Volatility | ==================================================
+[2026-06-03 16:58:53] INFO     | trading.strategy.Corn_Volatility | EXECUTING STRATEGY: Corn_Volatility
+[2026-06-03 16:58:53] INFO     | trading.strategy.Corn_Volatility | ==================================================
+[2026-06-03 16:58:53] INFO     | trading.strategy.Corn_Volatility | [1] Qualifying contracts...
+[2026-06-03 16:58:53] INFO     | trading.broker         | Qualified contract: ZCN6  conId=602619718
+[2026-06-03 16:58:53] INFO     | trading.broker         | Qualified contract: ZCN6  conId=602619718
+[2026-06-03 16:58:53] INFO     | trading.strategy.Corn_Volatility | [2] Fetching historical data...
+[2026-06-03 16:58:53] INFO     | trading.broker         | Qualified contract: ZCN6  conId=602619718
+[2026-06-03 16:58:54] INFO     | trading.broker         | Fetched 502 historical bars for ZCN6
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | [3] Computing indicators...
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | Last bar  date=2026-06-03  close=431.5000  BarRange=11.7500  VolThreshold=17.1641  ATR=9.7515  Signal=0  PosSize=10
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | Current position: 0
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | [4] Generating signal...
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | Signal: NONE  reason=No volatility expansion signal
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | No order required
+[2026-06-03 16:58:54] INFO     | trading.strategy.Corn_Volatility | EXECUTION COMPLETE for Corn_Volatility
+[2026-06-03 16:58:54] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 393 B sent in 13 messages, 50.9 kB received in 388 messages, session time 2.04 s.
+[2026-06-03 16:58:54] INFO     | ib_insync.client       | Disconnecting
+[2026-06-03 16:58:54] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-03 16:58:54] INFO     | trading.db             | Database connection closed
+[2026-06-03 16:58:54] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-06-04 16:58:52] INFO     | trading.main           | ============================================================
+[2026-06-04 16:58:52] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-04 16:58:52] INFO     | trading.main           | ============================================================
+[2026-06-04 16:58:52] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-04 16:58:52] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-04 16:58:52] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-04 16:58:52] INFO     | ib_insync.client       | Connected
+[2026-06-04 16:58:52] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-04 16:58:52] INFO     | ib_insync.client       | API connection ready
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-04 16:58:52] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=30.0, avgCost=37725.62)
+[2026-06-04 16:58:52] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-04 16:58:52] INFO     | trading.broker         | Connected to IBKR
+Strategy corn will use default account U22862141
+Strategy Corn_Volatility will use default account U22862141
+[2026-06-04 16:58:52] INFO     | trading.main           | Strategy Corn_Volatility will use account U22862141 for order placement
+[2026-06-04 16:58:52] INFO     | trading.strategy.Corn_Volatility | ==================================================
+[2026-06-04 16:58:52] INFO     | trading.strategy.Corn_Volatility | EXECUTING STRATEGY: Corn_Volatility
+[2026-06-04 16:58:52] INFO     | trading.strategy.Corn_Volatility | ==================================================
+[2026-06-04 16:58:52] INFO     | trading.strategy.Corn_Volatility | [1] Qualifying contracts...
+[2026-06-04 16:58:53] INFO     | trading.broker         | Qualified contract: ZCN6  conId=602619718
+[2026-06-04 16:58:53] INFO     | trading.broker         | Qualified contract: ZCN6  conId=602619718
+[2026-06-04 16:58:53] INFO     | trading.strategy.Corn_Volatility | [2] Fetching historical data...
+[2026-06-04 16:58:53] INFO     | trading.broker         | Qualified contract: ZCN6  conId=602619718
+[2026-06-04 16:58:53] INFO     | trading.broker         | Fetched 502 historical bars for ZCN6
+[2026-06-04 16:58:53] INFO     | trading.strategy.Corn_Volatility | [3] Computing indicators...
+[2026-06-04 16:58:53] INFO     | trading.strategy.Corn_Volatility | Last bar  date=2026-06-04  close=424.5000  BarRange=10.0000  VolThreshold=17.0698  ATR=9.7692  Signal=0  PosSize=10
+[2026-06-04 16:58:53] INFO     | trading.strategy.Corn_Volatility | Current position: 0
+[2026-06-04 16:58:53] INFO     | trading.strategy.Corn_Volatility | [4] Generating signal...
+[2026-06-04 16:58:53] INFO     | trading.strategy.Corn_Volatility | Signal: NONE  reason=No volatility expansion signal
+[2026-06-04 16:58:54] INFO     | trading.strategy.Corn_Volatility | No order required
+[2026-06-04 16:58:54] INFO     | trading.strategy.Corn_Volatility | EXECUTION COMPLETE for Corn_Volatility
+[2026-06-04 16:58:54] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 393 B sent in 13 messages, 50.5 kB received in 385 messages, session time 1.86 s.
+[2026-06-04 16:58:54] INFO     | ib_insync.client       | Disconnecting
+[2026-06-04 16:58:54] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-04 16:58:54] INFO     | trading.db             | Database connection closed
+[2026-06-04 16:58:54] INFO     | trading.main           | ALL STRATEGIES COMPLETE
