@@ -167,6 +167,18 @@ class MNQCondition1Params:
     # Strategy identification
     name: str = "MNQ_Condition1"
     
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("MNQCondition1Params")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
+    
     # Contract specifications
     symbol: str = "NQ"
     data_symbol: str = "NQ"  # Use continuous for data
@@ -237,6 +249,18 @@ class MESCondition1Params:
     
     # Strategy identification
     name: str = "MES_Condition1"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("MESCondition1Params")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Contract specifications
     symbol: str = "ES"
@@ -310,6 +334,18 @@ class BTCRSIParams:
     
     # Strategy identification
     name: str = "BTC_RSI_MeanRev"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("BTCRSIParams")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Contract specifications
     symbol: str = "MBT"
@@ -389,6 +425,18 @@ class BTC2Params:
     
     # Strategy identification
     name: str = "BTC2_ValueLow_SMA"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("BTC2Params")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Contract specifications
     symbol: str = "MBT"
@@ -479,6 +527,18 @@ class TreasuryEOMParams:
     # Strategy identification
     name: str = "Treasury_ZN_EOM"
     
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("TreasuryEOMParams")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
+    
     # Contract specifications
     symbol: str = "ZN"
     data_symbol: str = "ZN"
@@ -554,6 +614,18 @@ class Treasury30YEOMParams:
     
     # Strategy identification
     name: str = "Treasury_30Y_EOM"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("Treasury30YEOMParams")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Contract specifications
     symbol: str = "ZB"  # 30-Year Treasury Bond
@@ -631,6 +703,19 @@ class TreasuryStochHurstParams:
     
     # Strategy identification
     name: str = "Treasury_Stoch_Hurst"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("TreasuryStochHurstParams")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+                self.signal_contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Signal contract (ZB - 30-Year Bond)
     signal_symbol: str = "ZB"
@@ -742,6 +827,18 @@ class RBCombinedParams:
     
     # Strategy identification
     name: str = "RB_Combined"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("RBCombinedParams")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Contract specifications
     symbol: str = "RB"
@@ -897,6 +994,18 @@ class Gold2Params:
             price_offset=self.price_offset,
         )
     
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("Gold2Params")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
+    
     @property
     def params(self) -> Dict[str, Any]:
         return {
@@ -934,6 +1043,18 @@ class CornVolatilityParams:
     
     # Strategy identification
     name: str = "Corn_Volatility"
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("CornVolatilityParams")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     # Contract specifications
     symbol: str = "ZC"
@@ -1086,6 +1207,18 @@ class MESCubeHLCParams:
             data_exchange=self.exchange,
             price_offset=self.price_offset,
         )
+    
+    def __post_init__(self) -> None:
+        """Load contract_month from database after initialization."""
+        try:
+            from utils.expiry_reader import ExpiryReader
+            reader = ExpiryReader()
+            expiry = reader.get_strategy_expiry("MES_CubeHLC")
+            if expiry:
+                self.contract_month = expiry.trade_expiry_yyyymm
+        except Exception:
+            # Fallback to original value if database is not available
+            pass
     
     @property
     def params(self) -> Dict[str, Any]:
