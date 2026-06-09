@@ -835,7 +835,8 @@ class RBCombinedParams:
             reader = ExpiryReader()
             expiry = reader.get_strategy_expiry("RBCombinedParams")
             if expiry:
-                self.contract_month = expiry.trade_expiry_yyyymm
+                # RB (NYMEX) requires full YYYYMMDD for contract qualification
+                self.contract_month = expiry.trade_expiry_yyyymmdd
         except Exception:
             # Fallback to original value if database is not available
             pass

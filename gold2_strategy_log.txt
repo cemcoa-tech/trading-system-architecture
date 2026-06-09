@@ -846,3 +846,114 @@ Strategy Gold2 will use default account U22862141
 [2026-06-04 16:59:47] INFO     | trading.broker         | Disconnected from IBKR
 [2026-06-04 16:59:47] INFO     | trading.db             | Database connection closed
 [2026-06-04 16:59:47] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-06-07 16:59:45] INFO     | trading.main           | ============================================================
+[2026-06-07 16:59:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-07 16:59:45] INFO     | trading.main           | ============================================================
+[2026-06-07 16:59:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-07 16:59:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-07 16:59:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-07 16:59:45] INFO     | ib_insync.client       | Connected
+[2026-06-07 16:59:45] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-07 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-07 16:59:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-06-07 16:59:45] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-06-07 16:59:45] INFO     | ib_insync.client       | API connection ready
+[2026-06-07 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-06-07 16:59:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-07 16:59:45] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-07 16:59:45] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-07 16:59:45] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-06-07 16:59:47] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-06-07 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-06-07 16:59:47] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-06-07 16:59:47] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-06-07 16:59:47] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-06-07 16:59:47] INFO     | trading.broker         | Qualified contract: GCQ6  conId=732156872
+[2026-06-07 16:59:47] INFO     | trading.broker         | Qualified contract: GCQ6  conId=732156872
+[2026-06-07 16:59:47] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-06-07 16:59:47] INFO     | trading.broker         | Qualified contract: GCQ6  conId=732156872
+[2026-06-07 16:59:48] INFO     | trading.broker         | Fetched 426 historical bars for GCQ6
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | Last bar  date=2026-06-05  close=4365.30  ATR=111.8581  ab=2  PosSize=1  DoW=4
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | Signal: NONE  reason=ab=2 (no entry signal)
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | No order required
+[2026-06-07 16:59:48] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-06-07 16:59:48] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 396 B sent in 13 messages, 44.0 kB received in 383 messages, session time 2.95 s.
+[2026-06-07 16:59:48] INFO     | ib_insync.client       | Disconnecting
+[2026-06-07 16:59:48] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-07 16:59:48] INFO     | trading.db             | Database connection closed
+[2026-06-07 16:59:48] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-06-08 16:59:45] INFO     | trading.main           | ============================================================
+[2026-06-08 16:59:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-08 16:59:45] INFO     | trading.main           | ============================================================
+[2026-06-08 16:59:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-08 16:59:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-08 16:59:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 16:59:47] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 16:59:47] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-08 16:59:47] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-08 16:59:47] WARNING  | trading.broker         | Connection attempt 1 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-08 16:59:52] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 2/3)
+[2026-06-08 16:59:52] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 16:59:54] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 16:59:54] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-08 16:59:54] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-08 16:59:54] WARNING  | trading.broker         | Connection attempt 2 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-08 16:59:59] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 3/3)
+[2026-06-08 16:59:59] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 17:00:01] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 17:00:01] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-08 17:00:01] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-08 17:00:01] WARNING  | trading.broker         | Connection attempt 3 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-08 17:00:01] CRITICAL | trading.main           | Could not connect to IBKR - aborting
+[2026-06-08 17:00:01] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-08 17:00:01] INFO     | trading.db             | Database connection closed
+[2026-06-08 22:24:55] INFO     | trading.main           | ============================================================
+[2026-06-08 22:24:55] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-08 22:24:55] INFO     | trading.main           | ============================================================
+[2026-06-08 22:24:55] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-08 22:24:55] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-08 22:24:55] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 22:24:55] INFO     | ib_insync.client       | Connected
+[2026-06-08 22:24:55] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-08 22:24:55] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-08 22:24:55] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-06-08 22:24:55] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-06-08 22:24:55] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-08 22:24:55] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-08 22:24:55] INFO     | ib_insync.client       | API connection ready
+[2026-06-08 22:24:55] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=27.0, avgCost=36841.87)
+[2026-06-08 22:24:56] INFO     | ib_insync.wrapper      | execDetails Execution(execId='00010181.6a274ef1.01.01', time=datetime.datetime(2026, 6, 9, 3, 16, 42, tzinfo=datetime.timezone.utc), acctNumber='U16668533', exchange='CME', side='SLD', shares=5.0, price=7427.75, permId=232291262, clientId=33, orderId=53, liquidation=0, cumQty=5.0, avgPrice=7427.75, orderRef='', evRule='', evMultiplier=0.0, modelCode='', lastLiquidity=1)
+[2026-06-08 22:24:56] INFO     | ib_insync.wrapper      | commissionReport: CommissionReport(execId='00010181.6a274ef1.01.01', commission=3.1, currency='USD', realizedPNL=1481.3, yield_=0.0, yieldRedemptionDate=0)
+[2026-06-08 22:24:56] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-08 22:24:56] INFO     | trading.broker         | Connected to IBKR
+Strategy gold2 will use account U20859646 for orders
+Strategy Gold2 will use default account U22862141
+[2026-06-08 22:24:58] INFO     | trading.main           | Strategy Gold2 will use account U22862141 for order placement
+[2026-06-08 22:24:58] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-06-08 22:24:58] INFO     | trading.strategy.Gold2 | EXECUTING STRATEGY: Gold2
+[2026-06-08 22:24:58] INFO     | trading.strategy.Gold2 | ==================================================
+[2026-06-08 22:24:58] INFO     | trading.strategy.Gold2 | [1] Qualifying contracts...
+[2026-06-08 22:24:58] INFO     | trading.broker         | Qualified contract: GCQ6  conId=732156872
+[2026-06-08 22:24:58] INFO     | trading.broker         | Qualified contract: GCQ6  conId=732156872
+[2026-06-08 22:24:58] INFO     | trading.strategy.Gold2 | [2] Fetching historical data...
+[2026-06-08 22:24:58] INFO     | trading.broker         | Qualified contract: GCQ6  conId=732156872
+[2026-06-08 22:24:59] INFO     | trading.broker         | Fetched 428 historical bars for GCQ6
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | [3] Computing indicators...
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | Last bar  date=2026-06-09  close=4358.90  ATR=104.2322  ab=2  PosSize=1  DoW=1
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | Current position: 0
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | [4] Generating signal...
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | Position check - DB: in_position=False, bars_held=0 | IBKR: current_pos=0
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | Signal: NONE  reason=ab=2 (no entry signal)
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | No order required
+[2026-06-08 22:24:59] INFO     | trading.strategy.Gold2 | EXECUTION COMPLETE for Gold2
+[2026-06-08 22:24:59] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 396 B sent in 13 messages, 45.3 kB received in 387 messages, session time 3.66 s.
+[2026-06-08 22:24:59] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 22:24:59] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-08 22:24:59] INFO     | trading.db             | Database connection closed
+[2026-06-08 22:24:59] INFO     | trading.main           | ALL STRATEGIES COMPLETE

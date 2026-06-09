@@ -1,0 +1,174 @@
+[2026-06-05 16:41:36] INFO     | trading.main           | ============================================================
+[2026-06-05 16:41:36] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-05 16:41:36] INFO     | trading.main           | ============================================================
+[2026-06-05 16:41:36] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-05 16:41:36] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-05 16:41:36] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-05 16:41:38] INFO     | ib_insync.client       | Disconnecting
+[2026-06-05 16:41:38] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-05 16:41:38] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-05 16:41:38] WARNING  | trading.broker         | Connection attempt 1 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-05 16:41:43] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 2/3)
+[2026-06-05 16:41:43] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-05 16:41:45] INFO     | ib_insync.client       | Disconnecting
+[2026-06-05 16:41:45] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-05 16:41:45] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-05 16:41:45] WARNING  | trading.broker         | Connection attempt 2 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-05 16:41:50] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 3/3)
+[2026-06-05 16:41:50] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-05 16:41:52] INFO     | ib_insync.client       | Disconnecting
+[2026-06-05 16:41:52] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-05 16:41:52] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-05 16:41:52] WARNING  | trading.broker         | Connection attempt 3 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-05 16:41:52] CRITICAL | trading.main           | Could not connect to IBKR - aborting
+[2026-06-05 16:41:52] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-05 16:41:52] INFO     | trading.db             | Database connection closed
+[2026-06-05 16:43:50] INFO     | trading.main           | ============================================================
+[2026-06-05 16:43:50] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-05 16:43:50] INFO     | trading.main           | ============================================================
+[2026-06-05 16:43:50] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-05 16:43:50] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-05 16:43:50] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-05 16:43:50] INFO     | ib_insync.client       | Connected
+[2026-06-05 16:43:50] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-05 16:43:50] INFO     | ib_insync.client       | API connection ready
+[2026-06-05 16:43:50] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-05 16:43:50] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:apachmds
+[2026-06-05 16:43:50] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-05 16:43:54] ERROR    | ib_insync.ib           | positions request timed out
+[2026-06-05 16:43:54] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-05 16:43:54] INFO     | trading.broker         | Connected to IBKR
+Strategy mes2 will use account U20859646 for orders
+Strategy MES_CubeHLC will use default account U22862141
+[2026-06-05 16:43:56] INFO     | trading.main           | Strategy MES_CubeHLC will use account U22862141 for order placement
+[2026-06-05 16:43:56] INFO     | trading.strategy.MES_CubeHLC | ==================================================
+[2026-06-05 16:43:56] INFO     | trading.strategy.MES_CubeHLC | EXECUTING STRATEGY: MES_CubeHLC
+[2026-06-05 16:43:56] INFO     | trading.strategy.MES_CubeHLC | ==================================================
+[2026-06-05 16:43:56] INFO     | trading.strategy.MES_CubeHLC | [1] Qualifying contracts...
+[2026-06-05 16:43:56] INFO     | trading.broker         | Qualified contract: MESM6  conId=770561194
+[2026-06-05 16:43:57] INFO     | trading.broker         | Qualified contract: MESM6  conId=770561194
+[2026-06-05 16:43:57] INFO     | trading.strategy.MES_CubeHLC | [2] Fetching historical data...
+[2026-06-05 16:43:59] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-05 16:44:02] INFO     | trading.broker         | Fetched 509 historical bars for MESM6
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | [3] Computing indicators...
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | Last bar  date=2026-06-05  close=7368.00  CubeHLC=7438.73  CloseAvg=7552.32  ATR=90.15  Cond1=False  PosSize=1  Month=6
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | Current position: 0
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | [4] Generating signal...
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | Signal: NONE  reason=Condition1 not met
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | No order required
+[2026-06-05 16:44:02] INFO     | trading.strategy.MES_CubeHLC | EXECUTION COMPLETE for MES_CubeHLC
+[2026-06-05 16:44:02] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 394 B sent in 13 messages, 54.2 kB received in 305 messages, session time 11.7 s.
+[2026-06-05 16:44:02] INFO     | ib_insync.client       | Disconnecting
+[2026-06-05 16:44:02] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-05 16:44:02] INFO     | trading.db             | Database connection closed
+[2026-06-05 16:44:02] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-06-07 17:01:45] INFO     | trading.main           | ============================================================
+[2026-06-07 17:01:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-07 17:01:45] INFO     | trading.main           | ============================================================
+[2026-06-07 17:01:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-07 17:01:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-07 17:01:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-07 17:01:45] INFO     | ib_insync.client       | Connected
+[2026-06-07 17:01:45] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:usfuture
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-07 17:01:45] INFO     | ib_insync.client       | API connection ready
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=32.0, avgCost=36841.87)
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | execDetails Execution(execId='00010181.6a25e541.01.01', time=datetime.datetime(2026, 6, 7, 22, 0, tzinfo=datetime.timezone.utc), acctNumber='U16668533', exchange='CME', side='BOT', shares=32.0, price=7368.25, permId=159771037, clientId=33, orderId=46, liquidation=0, cumQty=32.0, avgPrice=7368.25, orderRef='', evRule='', evMultiplier=0.0, modelCode='', lastLiquidity=1)
+[2026-06-07 17:01:45] INFO     | ib_insync.wrapper      | commissionReport: CommissionReport(execId='00010181.6a25e541.01.01', commission=19.84, currency='USD', realizedPNL=0.0, yield_=0.0, yieldRedemptionDate=0)
+[2026-06-07 17:01:45] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-07 17:01:45] INFO     | trading.broker         | Connected to IBKR
+Strategy mes2 will use account U20859646 for orders
+Strategy MES_CubeHLC will use default account U22862141
+[2026-06-07 17:01:46] INFO     | trading.main           | Strategy MES_CubeHLC will use account U22862141 for order placement
+[2026-06-07 17:01:46] INFO     | trading.strategy.MES_CubeHLC | ==================================================
+[2026-06-07 17:01:46] INFO     | trading.strategy.MES_CubeHLC | EXECUTING STRATEGY: MES_CubeHLC
+[2026-06-07 17:01:46] INFO     | trading.strategy.MES_CubeHLC | ==================================================
+[2026-06-07 17:01:46] INFO     | trading.strategy.MES_CubeHLC | [1] Qualifying contracts...
+[2026-06-07 17:01:46] INFO     | trading.broker         | Qualified contract: MESM6  conId=770561194
+[2026-06-07 17:01:47] INFO     | trading.broker         | Qualified contract: MESM6  conId=770561194
+[2026-06-07 17:01:47] INFO     | trading.strategy.MES_CubeHLC | [2] Fetching historical data...
+[2026-06-07 17:01:49] INFO     | trading.broker         | Fetched 508 historical bars for MESM6
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | [3] Computing indicators...
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | Last bar  date=2026-06-08  close=7370.50  CubeHLC=7367.50  CloseAvg=7543.52  ATR=86.87  Cond1=False  PosSize=1  Month=6
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | Current position: 0
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | [4] Generating signal...
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | Signal: NONE  reason=Condition1 not met
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | No order required
+[2026-06-07 17:01:49] INFO     | trading.strategy.MES_CubeHLC | EXECUTION COMPLETE for MES_CubeHLC
+[2026-06-07 17:01:49] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 394 B sent in 13 messages, 58.5 kB received in 387 messages, session time 4.54 s.
+[2026-06-07 17:01:49] INFO     | ib_insync.client       | Disconnecting
+[2026-06-07 17:01:49] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-07 17:01:49] INFO     | trading.db             | Database connection closed
+[2026-06-07 17:01:49] INFO     | trading.main           | ALL STRATEGIES COMPLETE
+[2026-06-08 17:01:45] INFO     | trading.main           | ============================================================
+[2026-06-08 17:01:45] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-08 17:01:45] INFO     | trading.main           | ============================================================
+[2026-06-08 17:01:45] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-08 17:01:45] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-08 17:01:45] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 17:01:47] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 17:01:47] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-08 17:01:47] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-08 17:01:47] WARNING  | trading.broker         | Connection attempt 1 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-08 17:01:52] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 2/3)
+[2026-06-08 17:01:52] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 17:01:54] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 17:01:54] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-08 17:01:54] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-08 17:01:54] WARNING  | trading.broker         | Connection attempt 2 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-08 17:01:59] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 3/3)
+[2026-06-08 17:01:59] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 17:02:01] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 17:02:01] ERROR    | ib_insync.client       | API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+[2026-06-08 17:02:01] ERROR    | ib_insync.client       | Make sure API port on TWS/IBG is open
+[2026-06-08 17:02:01] WARNING  | trading.broker         | Connection attempt 3 failed: [WinError 1225] The remote computer refused the network connection
+[2026-06-08 17:02:01] CRITICAL | trading.main           | Could not connect to IBKR - aborting
+[2026-06-08 17:02:01] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-08 17:02:01] INFO     | trading.db             | Database connection closed
+[2026-06-08 22:27:50] INFO     | trading.main           | ============================================================
+[2026-06-08 22:27:50] INFO     | trading.main           |   TRADING FRAMEWORK – STARTING
+[2026-06-08 22:27:50] INFO     | trading.main           | ============================================================
+[2026-06-08 22:27:50] INFO     | trading.db             | Database ready at C:\Users\USER\Desktop\trading-system-architecture\data\trading.db
+[2026-06-08 22:27:50] INFO     | trading.broker         | Connecting to IBKR 127.0.0.1:4001 (attempt 1/3)
+[2026-06-08 22:27:50] INFO     | ib_insync.client       | Connecting to 127.0.0.1:4001 with clientId 8935...
+[2026-06-08 22:27:50] INFO     | ib_insync.client       | Connected
+[2026-06-08 22:27:50] INFO     | ib_insync.client       | Logged on to server version 176
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | Warning 2104, reqId -1: Market data farm connection is OK:hfarm
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | Warning 2107, reqId -1: HMDS data farm connection is inactive but should be available upon demand.apachmds
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:cashhmds
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | Warning 2106, reqId -1: HMDS data farm connection is OK:ushmds
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | Warning 2158, reqId -1: Sec-def data farm connection is OK:secdefhk
+[2026-06-08 22:27:50] INFO     | ib_insync.client       | API connection ready
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | position: Position(account='U16668533', contract=Future(conId=770561194, symbol='MES', lastTradeDateOrContractMonth='20260618', multiplier='5', currency='USD', localSymbol='MESM6', tradingClass='MES'), position=27.0, avgCost=36841.87)
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | execDetails Execution(execId='00010181.6a274ef1.01.01', time=datetime.datetime(2026, 6, 9, 3, 16, 42, tzinfo=datetime.timezone.utc), acctNumber='U16668533', exchange='CME', side='SLD', shares=5.0, price=7427.75, permId=232291262, clientId=33, orderId=53, liquidation=0, cumQty=5.0, avgPrice=7427.75, orderRef='', evRule='', evMultiplier=0.0, modelCode='', lastLiquidity=1)
+[2026-06-08 22:27:50] INFO     | ib_insync.wrapper      | commissionReport: CommissionReport(execId='00010181.6a274ef1.01.01', commission=3.1, currency='USD', realizedPNL=1481.3, yield_=0.0, yieldRedemptionDate=0)
+[2026-06-08 22:27:50] INFO     | ib_insync.ib           | Synchronization complete
+[2026-06-08 22:27:50] INFO     | trading.broker         | Connected to IBKR
+Strategy mes2 will use account U20859646 for orders
+Strategy MES_CubeHLC will use default account U22862141
+[2026-06-08 22:27:51] INFO     | trading.main           | Strategy MES_CubeHLC will use account U22862141 for order placement
+[2026-06-08 22:27:51] INFO     | trading.strategy.MES_CubeHLC | ==================================================
+[2026-06-08 22:27:51] INFO     | trading.strategy.MES_CubeHLC | EXECUTING STRATEGY: MES_CubeHLC
+[2026-06-08 22:27:51] INFO     | trading.strategy.MES_CubeHLC | ==================================================
+[2026-06-08 22:27:51] INFO     | trading.strategy.MES_CubeHLC | [1] Qualifying contracts...
+[2026-06-08 22:27:51] INFO     | trading.broker         | Qualified contract: MESM6  conId=770561194
+[2026-06-08 22:27:51] INFO     | trading.broker         | Qualified contract: MESM6  conId=770561194
+[2026-06-08 22:27:51] INFO     | trading.strategy.MES_CubeHLC | [2] Fetching historical data...
+[2026-06-08 22:27:54] INFO     | trading.broker         | Fetched 509 historical bars for MESM6
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | [3] Computing indicators...
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | Last bar  date=2026-06-09  close=7426.00  CubeHLC=7414.98  CloseAvg=7536.98  ATR=88.56  Cond1=False  PosSize=1  Month=6
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | Current position: 0
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | [4] Generating signal...
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | Signal: NONE  reason=Condition1 not met
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | No order required
+[2026-06-08 22:27:54] INFO     | trading.strategy.MES_CubeHLC | EXECUTION COMPLETE for MES_CubeHLC
+[2026-06-08 22:27:54] INFO     | ib_insync.ib           | Disconnecting from 127.0.0.1:4001, 394 B sent in 13 messages, 58.8 kB received in 387 messages, session time 4.21 s.
+[2026-06-08 22:27:54] INFO     | ib_insync.client       | Disconnecting
+[2026-06-08 22:27:54] INFO     | trading.broker         | Disconnected from IBKR
+[2026-06-08 22:27:54] INFO     | trading.db             | Database connection closed
+[2026-06-08 22:27:54] INFO     | trading.main           | ALL STRATEGIES COMPLETE
